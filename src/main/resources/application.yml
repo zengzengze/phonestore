@@ -1,0 +1,19 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /phonestore
+#logging:
+#  level:
+#    org.springframework: debug
+spring:
+  freemarker:
+    charset: UTF-8
+    ## 配置数据源信息
+  datasource:
+    username: scott
+    password: orcl
+    url: jdbc:oracle:thin:@localhost:1521:phone
+    driver-class-name: oracle.jdbc.OracleDriver
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
