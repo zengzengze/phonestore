@@ -2,6 +2,7 @@ package com.msy.phonestore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.msy.phonestore.pojo.Phone;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,4 +12,5 @@ import com.msy.phonestore.pojo.Phone;
  * @Description:
  */
 public interface PhoneMapper extends BaseMapper<Phone> {
+
 }

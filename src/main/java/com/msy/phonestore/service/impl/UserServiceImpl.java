@@ -26,8 +26,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ResponseModel Login(Users users) throws Exception {
         QueryWrapper<Users> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("userId",users.getUserId());
-        queryWrapper.eq("password",users.getPassword());
+        queryWrapper.eq("userId",users.getUserId()).eq("password",users.getPassword());
         Users users1 = userMapper.selectOne(queryWrapper);
 
         if(users1!=null){

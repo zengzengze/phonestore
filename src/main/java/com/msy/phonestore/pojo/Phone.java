@@ -8,11 +8,14 @@ import lombok.Data;
 @Data
 @TableName(value = "phone")
 public class Phone {
+
     @TableId(value = "phoneId")
     private Integer phoneId;
     private String pname;
-    @TableField(value = "pType")
-    private String pType;
+
+    @TableField(value = "pTypeId")
+    private String pTypeId;
+
     @TableField(value = "phoneImg")
     private String phoneImg;
     private Integer remark;
