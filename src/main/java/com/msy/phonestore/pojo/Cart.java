@@ -1,20 +1,51 @@
 package com.msy.phonestore.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
 
-@Data
+import com.baomidou.mybatisplus.annotation.*;
+
 @TableName(value = "cart")
+@KeySequence(value = "SEQ_CART_CARTID")
 public class Cart {
-    @TableId(value = "cartId")
+
+    @TableId(value = "cartId",type = IdType.INPUT)
     private Integer cartId;
+
     @TableField(value = "userId")
     private Integer userId;
-    @TableField(value = "pdateiletId")
-    private Integer pdateiletId;
+
+    @TableField(value = "pDetailetId")
+    private Integer pDetailetId;
     private Integer quantity;
-    private double subtotal;
-    private double total;
+
+    public Integer getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getpDetailetId() {
+        return pDetailetId;
+    }
+
+    public void setpDetailetId(Integer pDetailetId) {
+        this.pDetailetId = pDetailetId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }

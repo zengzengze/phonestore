@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
  * @Description:
  */
 @RestController
-@RequestMapping("/user")
-public class UserController {
+    @RequestMapping("/user")
+    public class UserController {
 
-    @Autowired
-    private IUserService userService;
+        @Autowired
+        private IUserService userService;
 
-    @RequestMapping("/login")
-    public ResponseModel Login(@RequestBody Users users)throws Exception{
-        ResponseModel model = userService.Login(users);
-        return model;
-    }
+        @RequestMapping("/login")
+        public ResponseModel Login(@RequestBody Users users)throws Exception{
+            ResponseModel model = userService.Login(users);
+            return model;
+        }
 
 }

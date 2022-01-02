@@ -1,9 +1,8 @@
 package com.msy.phonestore.controller;
 
-import com.msy.phonestore.service.ifc.IPhoneService;
+import com.msy.phonestore.service.ifc.IPhoneTypeService;
 import com.msy.phonestore.vo.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,29 +14,20 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  *
  * @Author: zengfanjing
- * @Date: 2021/11/24/16:34
+ * @Date: 2021/12/25/15:18
  * @Description:
  */
-@RestController
-@RequestMapping("/phone")
 @CrossOrigin
-public class PhoneController {
+@RestController
+@RequestMapping("/phoneType")
+public class PhoneTypeController {
 
     @Autowired
-    private IPhoneService phoneService;
+    private IPhoneTypeService phoneTypeService;
 
-    @RequestMapping("/findMsgByMap")
+    @RequestMapping("/PhoneTypeList")
     public ResponseModel findMsgByMap(@RequestBody Map<String,Object> map)throws Exception{
-        System.out.println(map);
-        ResponseModel model = phoneService.findMsgByMap(map);
+        ResponseModel model = phoneTypeService.findMsgByMap(map);
         return model;
     }
-
-    @RequestMapping("/findMsgById")
-    public ResponseModel findMsgById(Integer id)throws Exception{
-        System.out.println(id);
-        ResponseModel model = phoneService.findMsgById(id);
-        return model;
-    }
-
 }

@@ -14,10 +14,14 @@ public class Phone {
     private String pname;
 
     @TableField(value = "pTypeId")
-    private String pTypeId;
+    private Integer pTypeId;
 
     @TableField(value = "phoneImg")
     private String phoneImg;
     private Integer remark;
     private double praise;
+
+    private PhoneType phoneType;
+    private PhoneDetailet phoneDetailet;
+
 }

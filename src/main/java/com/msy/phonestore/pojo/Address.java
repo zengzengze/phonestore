@@ -13,6 +13,14 @@ public class Address {
     private Integer addressId;
     @TableField(value = "userId")
     private Integer userId;
+    private String province;
+    private String city;
+    private String county;
     private String address;
+    private String name;
+    private String phone;
+    @TableField(value = "defaultState")
+    private Integer defaultState;
+    private Integer state;
 
 }

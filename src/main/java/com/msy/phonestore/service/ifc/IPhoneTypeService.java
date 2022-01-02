@@ -8,14 +8,10 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  *
  * @Author: zengfanjing
- * @Date: 2021/11/24/15:50
+ * @Date: 2021/12/25/15:14
  * @Description:
  */
-public interface IPhoneService {
+public interface IPhoneTypeService {
+    //查询手机类型
     ResponseModel findMsgByMap(Map<String,Object> map)throws Exception;
-
-    //根据手机id查询手机
-    ResponseModel findMsgById(Integer id)throws Exception;
-
-
 }
