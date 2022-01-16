@@ -1,14 +1,13 @@
 package com.msy.phonestore.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 @Data
 @TableName(value = "users")
+@KeySequence(value = "USERS_USERID_SEQ")
 public class Users {
-    @TableId(value = "userId")
+    @TableId(value = "userId",type = IdType.INPUT)
     private Integer userId;
     @TableField(value = "userName")
     private String userName;
@@ -20,8 +19,6 @@ public class Users {
     private String userImg;
     private String province;
     private String city;
-    @TableField(value = "uAddress")
-    private String uAddress;
     private Integer grade;
     private String email;
     @TableField(value = "pNumber")

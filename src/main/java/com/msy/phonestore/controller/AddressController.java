@@ -34,17 +34,33 @@ public class AddressController {
         return model;
     }
 
-//    @RequestMapping("/insertCartMsg")
-//    public ResponseModel insertCartMsg(@RequestBody Cart cart)throws Exception{
-////        System.out.println(cart);
-//        ResponseModel model = cartService.insertCartMsg(cart);
-//        return model;
-//    }
-//
+    //
+    @RequestMapping("/findAddressById")
+    public ResponseModel findMsgById(Integer id)throws Exception{
+        System.out.println(id);
+        ResponseModel model = addressService.findMsgById(id);
+        return model;
+    }
+
+
+    @RequestMapping("/insertAddressMsg")
+    public ResponseModel insertAddressMsg(@RequestBody Address address)throws Exception{
+        System.out.println(address);
+        ResponseModel model = addressService.insertAddressMsg(address);
+        return model;
+    }
+
     @RequestMapping("/updateAddressMsg")
     public ResponseModel updateAddressMsg(@RequestBody Address address)throws Exception{
         System.out.println(address);
         ResponseModel model = addressService.updateAddressMsg(address);
+        return model;
+    }
+
+    @RequestMapping("/updateByAddressMsg")
+    public ResponseModel updateByAddressMsg(@RequestBody Address address)throws Exception{
+        System.out.println(address);
+        ResponseModel model = addressService.updateByAddressMsg(address);
         return model;
     }
 //
@@ -61,5 +77,12 @@ public class AddressController {
         ResponseModel model = addressService.delAddressMsgByIds(ids.get("ids"));
         return model;
     }
+
+    @RequestMapping("/updateAddressState")
+    public ResponseModel updateAddressState(Integer userId)throws Exception{
+        ResponseModel model = addressService.updateAddressState(userId);
+        return model;
+    }
+
 
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.phonestore.mapper.CartMapper">
+    <resultMap id="Cart_PhoneDetailet_" type="Cart">
+        <id column="cartId" property="cartId"></id>
+        <result column="userId" property="userId"></result>
+        <result column="phoneDetailetId" property="phoneDetailetId"></result>
+        <result column="quantity" property="quantity"></result>
+        <result column="comboId" property="comboId"></result>
+        <result column="assureId" property="assureId"></result>
+        <result column="cartState" property="cartState"></result>
+        <association property="phoneDetailet" javaType="phoneDetailet">
+            <id column="phoneDetailetId" property="phoneDetailetId"></id>
+            <result column="color" property="color"></result>
+            <result column="ram" property="ram"></result>
+            <result column="storage" property="storage"></result>
+            <result column="price" property="price"></result>
+            <result column="screenSize" property="screenSize"></result>
+            <result column="version" property="version"></result>
+                <association property="phone" javaType="phone">
+                    <result column="phoneName" property="phoneName"></result>
+                    <result column="phoneTypeId" property="phoneTypeId"></result>
+                    <result column="phoneImg" property="phoneImg"></result>
+                    <collection property="phoneAssureList" ofType="phoneAssure">
+                        <id column="assureId" property="assureId"></id>
+                        <result column="assure" property="assure"></result>
+                        <result column="assurePrice" property="assurePrice"></result>
+                        <result column="assureImg" property="assureImg"></result>
+                    </collection>
+                </association>
+            </association>
+            <association property="phoneCombo" javaType="phoneCombo">
+                <result column="combo" property="combo"></result>
+                <result column="comboPrice" property="comboPrice"></result>
+            </association>
+
+    </resultMap>
+
+    <select id="queryMsgByMap" resultMap="Cart_PhoneDetailet_" parameterType="int">
+            select * from cart a,phone_detailet pd,phone p,phone_combo pc,phone_assure pa
+            where a.pdetailetid=pd.pdetailetid
+            and pd.phoneid=p.phoneid
+            and p.phoneid=pa.phoneid
+            and a.comboid=pc.comboid
+            and a.userId=#{userId}
+    </select>
+</mapper>

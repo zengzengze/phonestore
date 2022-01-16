@@ -1,7 +1,5 @@
 package com.msy.phonestore.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -15,8 +13,11 @@ import lombok.Data;
 public class CartAndUserAndPhoneAndPhoneDetailetDTO {
     private Integer cartId;
     private Integer userId;
-    private Integer pDetailetId;
+    private Integer phoneDetailetId;
     private Integer quantity;
+    private Integer comboId;
+    private Integer assureId;
+    private Integer cartState;
 
     private String userName;
     private String name;
@@ -26,13 +27,12 @@ public class CartAndUserAndPhoneAndPhoneDetailetDTO {
     private String userImg;
     private String province;
     private String city;
-    private String uAddress;
     private Integer grade;
     private String email;
     private String pNumber;
 
     private Integer phoneId;
-    private String pname;
+    private String pName;
     private Integer pTypeId;
     private String phoneImg;
     private Integer remark;
@@ -44,6 +44,13 @@ public class CartAndUserAndPhoneAndPhoneDetailetDTO {
     private double price;
     private String screenSize;
     private String version;
+
+    private String assure;
+    private double assurePrice;
+    private String assureImg;
+
+    private String combo;
+    private double comboPrice;
 //
 //    //小计
 //    private double subtotal;

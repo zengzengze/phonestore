@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
   servlet:
     context-path: /phonestore
 #logging:
@@ -18,7 +18,10 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+## 配置mapper映射文件路径
+  mapper-locations: classpath:mapper/*.xml
+## 配置扫描实体包，给实体类设置别名
+  type-aliases-package: com.msy.phonestore.pojo
 
 logging:
   level:

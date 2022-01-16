@@ -14,15 +14,16 @@ import lombok.Data;
 @Data
 public class PhoneAndTypeAndDetailetAndImgDTO {
     private Integer phoneId;
-    private String pname;
-    private Integer pTypeId;
+
+    private String phoneName;
+    private Integer phoneTypeId;
     private String phoneImg;
     private Integer remark;
     private double praise;
 
     private String pType;
 
-    private Integer pDetailetId;
+    private Integer phoneDetailetId;
     private String color;
     private String ram;
     private String storage;

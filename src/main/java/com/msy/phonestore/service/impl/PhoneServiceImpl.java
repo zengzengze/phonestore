@@ -34,8 +34,6 @@ public class PhoneServiceImpl implements IPhoneService {
 
     @Override
     public ResponseModel findMsgByMap(Map<String, Object> map) throws Exception {
-
-
 //        MPJLambdaWrapper mpjLambdaWrapper=new MPJLambdaWrapper<>()
 //                .selectAll(Phone.class)
 //                .select(PhoneType::getPType)
@@ -45,17 +43,14 @@ public class PhoneServiceImpl implements IPhoneService {
 //                .innerJoin(PhoneDetailet.class,PhoneDetailet::getPhoneId,Phone::getPhoneId)
 //                .innerJoin(PhoneType.class, PhoneType::getPTypeId,Phone::getPTypeId)
 //                .eq(map.get("pTypeId")!=null,PhoneType::getPTypeId,map.get("pTypeId"));
-
         MPJQueryWrapper queryWrapper=new MPJQueryWrapper<>()
                 .select("t.*")
-                .select("pt.pType")
-                .select("pd.PDetailetId,pd.Ram,pd.Storage,pd.Version,pd.Color,pd.Price,pd.ScreenSize")
-                .innerJoin("Phone_Type pt on t.PTypeId=pt.PTypeId")
+                .select("pt.phoneType")
+                .select("pd.phoneDetailetId,pd.Ram,pd.Storage,pd.Version,pd.Color,pd.Price,pd.ScreenSize")
+                .innerJoin("Phone_Type pt on t.phoneTypeId=pt.phoneTypeId")
                 .innerJoin("Phone_Detailet pd on t.PhoneId = pd.PhoneId")
-                .eq(map.get("pTypeId")!=null,"t.pTypeId",map.get("pTypeId"));
-
+                .eq(map.get("phoneTypeId")!=null,"t.phoneTypeId",map.get("phoneTypeId"));
         Page phonePage=new Page<>((Integer)map.get("pageNumber"),(Integer)map.get("pageSize"));
-
         IPage<PhoneAndTypeAndDetailetAndImgDTO> phoneIPage = phoneMapper.selectJoinPage(phonePage, PhoneAndTypeAndDetailetAndImgDTO.class,queryWrapper);
 
 //        System.out.println("总页数： "+phoneIPage.getPages());
@@ -63,19 +58,17 @@ public class PhoneServiceImpl implements IPhoneService {
 //        phoneIPage.getRecords().forEach(System.out::println);
         return ResponseModel.success(ResCode.SUCCESS,phoneIPage);
     }
-
     @Override
     public ResponseModel findMsgById(Integer id) throws Exception {
         MPJLambdaWrapper mpjLambdaWrapper=new MPJLambdaWrapper<>()
-                .select(Phone::getPhoneId,Phone::getPname,Phone::getPhoneImg,Phone::getRemark,Phone::getPraise)
-                .select(PhoneType::getPType)
-                .select(PhoneDetailet::getPDetailetId,PhoneDetailet::getRam,PhoneDetailet::getStorage,PhoneDetailet::getVersion,
+                .select(Phone::getPhoneId,Phone::getPhoneName,Phone::getPhoneImg,Phone::getRemark,Phone::getPraise)
+                .select(PhoneType::getPhoneType)
+                .select(PhoneDetailet::getPhoneDetailetId,PhoneDetailet::getRam,PhoneDetailet::getStorage,PhoneDetailet::getVersion,
                         PhoneDetailet::getColor,PhoneDetailet::getPrice,PhoneDetailet::getScreenSize,
                         PhoneDetailet::getQuantity)
                 .innerJoin(PhoneDetailet.class,PhoneDetailet::getPhoneId,Phone::getPhoneId)
-                .innerJoin(PhoneType.class, PhoneType::getPTypeId,Phone::getPTypeId)
+                .innerJoin(PhoneType.class, PhoneType::getPhoneTypeId,Phone::getPhoneTypeId)
                 .eq(Phone::getPhoneId,id);
-
         List<PhoneAndTypeAndDetailetAndImgDTO> phoneAndTypeDTOS = phoneMapper.selectJoinList(PhoneAndTypeAndDetailetAndImgDTO.class, mpjLambdaWrapper);
         return  ResponseModel.success(ResCode.SUCCESS,phoneAndTypeDTOS);
     }

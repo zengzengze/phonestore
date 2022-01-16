@@ -35,15 +35,22 @@ public class CartController {
 
     @RequestMapping("/insertCartMsg")
     public ResponseModel insertCartMsg(@RequestBody Cart cart)throws Exception{
-//        System.out.println(cart);
+        System.out.println(cart.getComboId()+" "+cart.getPhoneDetailetId());
         ResponseModel model = cartService.insertCartMsg(cart);
         return model;
     }
 
     @RequestMapping("/updateCartMsg")
     public ResponseModel updateCartMsg(@RequestBody Cart cart)throws Exception{
-        System.out.println(cart);
+//        System.out.println(cart);
         ResponseModel model = cartService.updateCartMsg(cart);
+        return model;
+    }
+
+    @RequestMapping("/updateCartMsgByIDs")
+    public ResponseModel updateCartMsgByIDs(@RequestBody Map<String,Integer[]> ids)throws Exception{
+        System.out.println(ids.get("ids"));
+        ResponseModel model = cartService.updateCartMsgByIDs(ids.get("ids"));
         return model;
     }
 
@@ -58,6 +65,13 @@ public class CartController {
     public ResponseModel total(@RequestBody Map<String,Integer[]> ids)throws Exception{
         System.out.println(ids.get("ids"));
         ResponseModel model = cartService.total(ids.get("ids"));
+        return model;
+    }
+
+    @RequestMapping("/findCartByIds")
+    public ResponseModel findMsgByIds(@RequestBody Map<String,Integer[]> ids)throws Exception{
+        System.out.println(ids.get("ids"));
+        ResponseModel model = cartService.findMsgByIds(ids.get("ids"));
         return model;
     }
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.phonestore.mapper.UserCouponMapper">
+    <resultMap id="UserCoupon_CouPon_" type="UserCoupon">
+        <id column="userCouponId" property="userCouponId"></id>
+        <result column="userId" property="userId"></result>
+        <result column="couponId" property="couponId"></result>
+        <result column="userCouponCount" property="userCouponCount"></result>
+        <association property="coupon" javaType="coupon">
+            <id column="couponId" property="couponId"></id>
+            <result column="coupon" property="coupon"></result>
+            <result column="couponWorth" property="couponWorth"></result>
+            <result column="phoneId" property="phoneId"></result>
+            <result column="couponType" property="couponType"></result>
+            <result column="startTime" property="startTime"></result>
+            <result column="endTime" property="endTime"></result>
+            <result column="useLimit" property="useLimit"></result>
+            <result column="introduction" property="introduction"></result>
+            <result column="couponImg" property="couponImg"></result>
+        </association>
+
+    </resultMap>
+
+    <select id="queryMsgByMap" resultMap="UserCoupon_CouPon_" parameterType="map">
+        select * from user_coupon uc,(select * from (select * from coupon where
+        <if test="phoneId !=null and phoneId!=''">
+            phoneId=#{phoneId} or
+        </if>
+        coupontype=0) where
+        <if test="useLimit !=null and useLimit!=''">
+            uselimit &lt; #{useLimit} and
+        </if>
+        endTime >= sysdate AND startTime &lt;= sysdate) c
+        where uc.couponid=c.couponid and uc.userId=#{userId} order by c.endTime
+    </select>
+
+    <select id="findUnAvailableCouponList" resultMap="UserCoupon_CouPon_" parameterType="map">
+        select * from User_coupon uc,coupon c
+        where uc.couponid=c.couponid
+        and uc.couponId not in(
+        select couponId from (
+        select * from coupon
+        where
+        <if test="phoneId !=null and phoneId!=''">
+            phoneId=#{phoneId} or
+        </if>
+        coupontype=0) where
+        <if test="useLimit !=null and useLimit!=''">
+            uselimit &lt; #{useLimit} and
+        </if>
+        endTime >= sysdate
+        AND startTime &lt;= sysdate
+        ) and uc.userid=#{userId} order by c.endTime
+    </select>
+
+</mapper>

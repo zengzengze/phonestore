@@ -1,8 +1,6 @@
 package com.msy.phonestore.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 /**
@@ -14,10 +12,11 @@ import lombok.Data;
  */
 @Data
 @TableName(value = "Phone_Type")
+@KeySequence(value = "SEQ_PHONETYPE_PHONETYPEID")
 public class PhoneType {
 
-    @TableId(value = "pTypeId")
-    private Integer pTypeId;
-    @TableField(value = "pType")
-    private String pType;
+    @TableId(value = "phoneTypeId",type = IdType.INPUT)
+    private Integer phoneTypeId;
+    @TableField(value = "phoneType")
+    private String phoneType;
 }

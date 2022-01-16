@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.phonestore.mapper.OrderMapper">
+    <resultMap id="order_orderDetailet_" type="Orders">
+        <id column="orderId" property="orderId"></id>
+        <result column="userId" property="userId"></result>
+        <result column="submitOrderTime" property="submitOrderTime"></result>
+        <result column="orderTotal" property="orderTotal"></result>
+        <result column="addressId" property="addressId"></result>
+        <result column="orderState" property="orderState"></result>
+        <result column="paymentTime" property="paymentTime"></result>
+        <result column="returnGoodsTime" property="returnGoodsTime"></result>
+        <result column="confirmTime" property="confirmTime"></result>
+        <result column="userCouponId" property="userCouponId"></result>
+        <result column="pointsOffer" property="pointsOffer"></result>
+        <result column="couponId" property="couponId"></result>
+        <result column="shipTime" property="shipTime"></result>
+        <result column="deliveryTime" property="deliveryTime"></result>
+        <result column="completeTime" property="completeTime"></result>
+
+        <!--<association property="address" javaType="address">-->
+            <!--<result column="coupon" property="coupon"></result>-->
+            <!--<result column="couponWorth" property="couponWorth"></result>-->
+            <!--<result column="couponType" property="couponType"></result>-->
+            <!--<result column="introduction" property="introduction"></result>-->
+            <!--<result column="couponImg" property="couponImg"></result>-->
+        <!--</association>-->
+
+        <collection property="orderDetailets" ofType="orderDetailet">
+            <id column="orderDetailetId" property="orderDetailetId"></id>
+            <result column="phoneDetailetId" property="phoneDetailetId"></result>
+            <result column="phoneCount" property="phoneCount"></result>
+            <result column="comboId" property="comboId"></result>
+            <result column="assureId" property="assureId"></result>
+            <result column="assureCount" property="assureCount"></result>
+            <association property="phoneDetailet" javaType="phoneDetailet">
+                <result column="color" property="color"></result>
+                <result column="ram" property="ram"></result>
+                <result column="storage" property="storage"></result>
+                <result column="price" property="price"></result>
+                <result column="screenSize" property="screenSize"></result>
+                <result column="version" property="version"></result>
+                <association property="phone" javaType="phone">
+                    <result column="phoneName" property="phoneName"></result>
+                    <result column="phoneTypeId" property="phoneTypeId"></result>
+                    <result column="phoneImg" property="phoneImg"></result>
+                </association>
+            </association>
+            <association property="phoneCombo" javaType="phoneCombo">
+                <result column="combo" property="combo"></result>
+                <result column="comboPrice" property="comboPrice"></result>
+            </association>
+            <association property="phoneAssure" javaType="phoneAssure">
+                <id column="assureId" property="assureId"></id>
+                <result column="assure" property="assure"></result>
+                <result column="assurePrice" property="assurePrice"></result>
+                <result column="assureImg" property="assureImg"></result>
+            </association>
+        </collection>
+        <collection property="orderTimes" ofType="orderTime">
+            <id column="orderTimeId" property="orderTimeId"></id>
+            <result column="orderId" property="orderId"></result>
+            <result column="orderTime" property="orderTime"></result>
+            <result column="orderTimeIntroduce" property="orderTimeIntroduce"></result>
+        </collection>
+    </resultMap>
+
+    <select id="queryMsgByMap" resultMap="order_orderDetailet_" parameterType="map">
+        select * from orders o,order_detailet od,phone_detailet pd,
+        phone p,phone_combo pc,phone_assure pa,order_time ot
+        where o.orderid=od.orderid
+        and od.phonedetailetid=pd.phonedetailetid
+        and pd.phoneid=p.phoneid
+        and od.comboid=pc.comboid
+        and od.assureid=pa.assureid
+        and o.orderId=ot.orderId
+        <if test="orderId!=null and orderId!='' ">
+            and o.orderId=#{orderId}
+        </if>
+        <if test="userId!=null and userId!='' ">
+            and o.userid=#{userId}
+        </if>
+        <if test="orderState!=null and orderState!='' ">
+            and o.orderState=#{orderState}
+        </if>
+        order by o.submitOrderTime desc,ot.orderTime
+    </select>
+</mapper>

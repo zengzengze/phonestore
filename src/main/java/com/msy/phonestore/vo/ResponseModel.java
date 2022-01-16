@@ -11,6 +11,7 @@ public class ResponseModel {
     private Integer code;
     private String msg;
     private Object obj;
+    private Object obj1;
     private boolean flag;
 
     /**

@@ -1,26 +1,26 @@
 package com.msy.phonestore.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 @Data
 @TableName(value = "address")
+@KeySequence(value = "SEQ_ADDRESS_ADDRESSID")
 public class Address {
 
-    @TableId(value = "addressId")
+    @TableId(value = "addressId",type = IdType.INPUT)
     private Integer addressId;
     @TableField(value = "userId")
     private Integer userId;
-    private String province;
-    private String city;
-    private String county;
+    private Integer provinceId;
+    private Integer cityId;
+    private Integer countyId;
     private String address;
     private String name;
-    private String phone;
+    private String phoneNumber;
     @TableField(value = "defaultState")
     private Integer defaultState;
     private Integer state;
+    private String fixedNumber;
 
 }
