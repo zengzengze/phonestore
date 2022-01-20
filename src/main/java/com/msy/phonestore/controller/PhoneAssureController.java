@@ -30,4 +30,11 @@ public class PhoneAssureController {
         ResponseModel model = phoneAssureService.findByMap(map);
         return model;
     }
+
+    //后台使用
+    @RequestMapping("/findAssureListPage")
+    public ResponseModel findAssureListPage(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = phoneAssureService.findAssureListPage(map);
+        return model;
+    }
 }

@@ -1,7 +1,7 @@
 package com.msy.phonestore.controller;
 
-import com.msy.phonestore.pojo.Integral;
-import com.msy.phonestore.service.ifc.IntegralService;
+import com.msy.phonestore.service.ifc.ICourierCompanyService;
+import com.msy.phonestore.service.ifc.IOrderTimeService;
 import com.msy.phonestore.vo.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,20 +15,20 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  *
  * @Author: zengfanjing
- * @Date: 2022/01/12/20:15
+ * @Date: 2022/01/07/17:34
  * @Description:
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/integral")
-public class IntegralController {
+@RequestMapping("/courierCompany")
+public class CourierCompanyController {
     @Autowired
-    private IntegralService integralService;
+    private ICourierCompanyService courierCompanyService;
 
-    @RequestMapping("/findIntegralById")
-    public ResponseModel findIntegralById(Integer userId)throws Exception{
-//        System.out.println(map);
-        ResponseModel model = integralService.findIntegralById(userId);
+
+    @RequestMapping("/findCourierCompanyList")
+    public ResponseModel findCourierCompanyList(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = courierCompanyService.findCourierCompanyList(map);
         return model;
     }
 

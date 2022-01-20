@@ -25,4 +25,7 @@ public interface ICouponService {
 
     //删除优惠券
     ResponseModel deleteCouponById(Integer[] ids)throws Exception;
+
+    //后台使用
+    ResponseModel findCouponListPagMsg(Map<String,Object> map)throws Exception;
 }

@@ -27,11 +27,6 @@ public class OrderTimeController {
     @Autowired
     private IOrderTimeService orderTimeService;
 
-    @RequestMapping("/insertOrderTimeMsg")
-    public ResponseModel insertOrderTimeMsg(@RequestBody OrderTime orderTime)throws Exception{
-        ResponseModel model = orderTimeService.insertOrderTimeMsg(orderTime);
-        return model;
-    }
 
     @RequestMapping("/findOrderTimeMsg")
     public ResponseModel findOrderTimeMsg(@RequestBody Map<String,Object> map)throws Exception{
@@ -39,28 +34,4 @@ public class OrderTimeController {
         return model;
     }
 
-//    @RequestMapping("/insertOrder")
-//    public ResponseModel insertOrder(@RequestBody Map<String,Object> map) throws Exception{
-////        System.out.println(map.get("order"));
-//        ResponseModel model = orderService.insertOrder(map);
-//        return model;
-//    }
-//
-//    @RequestMapping("/updateOrder")
-//    public ResponseModel updateOrder(@RequestBody Orders order) throws Exception{
-//        ResponseModel model = orderService.updateOrder(order);
-//        return model;
-//    }
-//
-//    @RequestMapping("/deleteOrder")
-//    public ResponseModel deleteOrder(@RequestBody Map<String, Object[]> map) throws Exception{
-//        ResponseModel model = orderService.deleteOrder(map.get("ids"));
-//        return model;
-//    }
-//
-//    @RequestMapping("/paymentMsg")
-//    public ResponseModel paymentMsg(@RequestBody Orders order) throws Exception{
-//        ResponseModel model = orderService.paymentMsg(order);
-//        return model;
-//    }
 }

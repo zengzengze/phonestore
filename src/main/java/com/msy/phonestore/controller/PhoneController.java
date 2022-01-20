@@ -40,4 +40,11 @@ public class PhoneController {
         return model;
     }
 
+    //后台使用
+
+    @RequestMapping("/findPhoneListPageMsg")
+    public ResponseModel findPhoneListPageMsg(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = phoneService.findPhoneListPageMsg(map);
+        return model;
+    }
 }

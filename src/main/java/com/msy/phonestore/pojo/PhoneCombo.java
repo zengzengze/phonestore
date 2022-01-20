@@ -22,4 +22,6 @@ public class PhoneCombo {
     @TableField(value ="phoneId")
     private Integer phoneId;
     private Integer quantity;
+
+
 }

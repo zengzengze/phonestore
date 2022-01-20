@@ -17,5 +17,7 @@ public interface IPhoneService {
     //根据手机id查询手机
     ResponseModel findMsgById(Integer id)throws Exception;
 
+    //后台使用
+    ResponseModel findPhoneListPageMsg(Map<String,Object> map)throws Exception;
 
 }

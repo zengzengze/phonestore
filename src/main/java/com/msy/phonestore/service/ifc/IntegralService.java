@@ -1,4 +1,5 @@
 package com.msy.phonestore.service.ifc;
+import com.msy.phonestore.pojo.Integral;
 import com.msy.phonestore.vo.ResponseModel;
 
 /**
@@ -11,4 +12,5 @@ import com.msy.phonestore.vo.ResponseModel;
 public interface IntegralService {
 
     ResponseModel findIntegralById(Integer userId)throws Exception;
+
 }

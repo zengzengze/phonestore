@@ -3,6 +3,8 @@ package com.msy.phonestore.service.ifc;
 import com.msy.phonestore.pojo.Users;
 import com.msy.phonestore.vo.ResponseModel;
 
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -15,8 +17,6 @@ public interface IUserService {
 
     ResponseModel Login(Users users)throws Exception;
 
-
-
-
+    ResponseModel findUserListMsg(Map<String,Object> map)throws Exception;
 
 }

@@ -1,5 +1,6 @@
 package com.msy.phonestore.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.msy.phonestore.dto.UserCouponAndCouponDTO;
 import com.msy.phonestore.mapper.CouponMapper;
@@ -80,6 +81,7 @@ public class UserCouponServiceImpl implements IUserCouponService {
 
     @Override
     public ResponseModel insertCouponMsg(UserCoupon userCoupon) throws Exception {
+
         int row = userCouponMapper.insert(userCoupon);
         if(row>0){
             return ResponseModel.success(ResCode.SUCCESS);
@@ -87,4 +89,56 @@ public class UserCouponServiceImpl implements IUserCouponService {
         return ResponseModel.fail(ResCode.FAIL);
     }
 
+    @Override
+    public ResponseModel convertCouponMsg(Map<String, Object> map) throws Exception {
+        Coupon coupon=couponMapper.selectOne(new QueryWrapper<Coupon>().eq("convertCode",map.get("convertCode")));
+
+        UserCoupon userCoupon1 = userCouponMapper.selectOne(new QueryWrapper<UserCoupon>()
+                .eq("userId", map.get("userId"))
+                .eq("couponId", coupon.getCouponId()));
+
+        if(userCoupon1==null){
+            if(coupon.getCouponCount()-1!=-1){
+
+                UserCoupon userCoupon=new UserCoupon();
+                userCoupon.setCouponId(coupon.getCouponId());
+                userCoupon.setUserId((Integer) map.get("userId"));
+                userCoupon.setUserCouponCount(1);
+                int row = userCouponMapper.insert(userCoupon);
+
+                coupon.setCouponCount(coupon.getCouponCount()-1);
+                int row1 = couponMapper.updateById(coupon);
+
+                if(row>0 && row1>0){
+                    return ResponseModel.success(ResCode.SUCCESS);
+                }else {
+                    return ResponseModel.fail(ResCode.FAIL);
+                }
+
+            }else {
+                return ResponseModel.fail(ResCode.FAIL,"优惠券已兑完!");
+            }
+
+        }else {
+            return ResponseModel.fail(ResCode.FAIL,"你已经兑换过优惠券了!");
+        }
+    }
+
+    @Override
+    public ResponseModel updateUserCoupon(UserCoupon userCoupon) throws Exception {
+
+        //退回优惠券
+        userCoupon.setUserCouponCount(1);
+        int row = userCouponMapper.updateById(userCoupon);
+        if(row>0){
+            return ResponseModel.success(ResCode.SUCCESS);
+        }
+        return ResponseModel.fail(ResCode.FAIL);
+    }
+
+    @Override
+    public ResponseModel findUserCouponById(Integer userCouponId) throws Exception {
+        UserCoupon userCoupon = userCouponMapper.findUserCouponBuId(userCouponId);
+        return ResponseModel.success(ResCode.SUCCESS,userCoupon);
+    }
 }

@@ -1,10 +1,10 @@
 package com.msy.phonestore.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import com.msy.phonestore.dto.PhoneAndPhoneDetailetAndphoneTypeDTO;
 import com.msy.phonestore.dto.PhoneAndTypeAndDetailetAndImgDTO;
 import com.msy.phonestore.mapper.PhoneMapper;
 import com.msy.phonestore.pojo.Phone;
@@ -71,6 +71,24 @@ public class PhoneServiceImpl implements IPhoneService {
                 .eq(Phone::getPhoneId,id);
         List<PhoneAndTypeAndDetailetAndImgDTO> phoneAndTypeDTOS = phoneMapper.selectJoinList(PhoneAndTypeAndDetailetAndImgDTO.class, mpjLambdaWrapper);
         return  ResponseModel.success(ResCode.SUCCESS,phoneAndTypeDTOS);
+    }
+
+    //后台使用
+    @Override
+    public ResponseModel findPhoneListPageMsg(Map<String, Object> map) throws Exception {
+        MPJLambdaWrapper mpjLambdaWrapper=new MPJLambdaWrapper<Phone>()
+                .selectAll(Phone.class)
+                .select(PhoneDetailet::getColor,PhoneDetailet::getPrice,PhoneDetailet::getRam,PhoneDetailet::getStorage,PhoneDetailet::getVersion,PhoneDetailet::getScreenSize,PhoneDetailet::getQuantity)
+                .select(PhoneType::getPhoneType)
+                .innerJoin(PhoneDetailet.class,PhoneDetailet::getPhoneId,Phone::getPhoneId)
+                .innerJoin(PhoneType.class,PhoneType::getPhoneTypeId,Phone::getPhoneTypeId)
+                .eq(map.get("phoneDetailetId")!=null,PhoneDetailet::getPhoneDetailetId,map.get("phoneDetailetId"))
+                .eq(map.get("phoneType")!=null,PhoneType::getPhoneType,map.get("phoneType"));
+
+        Page phonePage=new Page<>((Integer)map.get("pageNumber"),(Integer)map.get("pageSize"));
+
+        IPage<PhoneAndPhoneDetailetAndphoneTypeDTO> pageDTOS = phoneMapper.selectJoinPage(phonePage, PhoneAndPhoneDetailetAndphoneTypeDTO.class, mpjLambdaWrapper);
+        return  ResponseModel.success(ResCode.SUCCESS,pageDTOS);
     }
 
 }

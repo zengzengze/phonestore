@@ -15,6 +15,8 @@ import java.util.Map;
 public interface IPhoneAssureService {
     ResponseModel findByMap(Map<String,Object> map) throws Exception;
 
-
     ResponseModel findById(Integer[] ids) throws Exception;
+
+    //手机保障
+    ResponseModel findAssureListPage(Map<String,Object> map)throws Exception;
 }

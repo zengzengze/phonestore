@@ -1,9 +1,12 @@
 package com.msy.phonestore.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.phonestore.mapper.CouponMapper;
 import com.msy.phonestore.mapper.PhoneMapper;
 import com.msy.phonestore.mapper.UserCouponMapper;
 import com.msy.phonestore.pojo.Coupon;
+import com.msy.phonestore.pojo.Users;
 import com.msy.phonestore.service.ifc.ICouponService;
 import com.msy.phonestore.vo.ResCode;
 import com.msy.phonestore.vo.ResponseModel;
@@ -77,5 +80,16 @@ public class CouponServiceImpl implements ICouponService {
             return ResponseModel.success(ResCode.SUCCESS);
         }
         return ResponseModel.fail(ResCode.FAIL);
+    }
+
+    @Override
+    public ResponseModel findCouponListPagMsg(Map<String, Object> map) throws Exception {
+        QueryWrapper queryWrapper=new QueryWrapper<Coupon>()
+                .like(map.get("coupon")!=null,"coupon",map.get("coupon"))
+                .eq(map.get("couponType")!=null,"couponType",map.get("couponType"));
+
+        Page userPage=new Page<>((Integer)map.get("pageNumber"),(Integer)map.get("pageSize"));
+        Page page = couponMapper.selectPage(userPage, queryWrapper);
+        return ResponseModel.success(ResCode.SUCCESS,page);
     }
 }

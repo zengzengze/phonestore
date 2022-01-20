@@ -21,6 +21,6 @@ public class Users {
     private String city;
     private Integer grade;
     private String email;
-    @TableField(value = "pNumber")
-    private String pNumber;
+    @TableField(value = "phoneNumber")
+    private String phoneNumber;
 }

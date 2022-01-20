@@ -18,4 +18,5 @@ import java.util.Map;
 public interface OrderMapper extends MPJBaseMapper<Orders> {
 
     public List<Orders> queryMsgByMap(Map<String,Object> map)throws Exception;
+
 }

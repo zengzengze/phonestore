@@ -29,4 +29,11 @@ public class PhoneComboController {
         ResponseModel model = phoneComboService.findByMap(map);
         return model;
     }
+
+    //后台使用
+    @RequestMapping("/findComboListPage")
+    public ResponseModel findComboListPage(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = phoneComboService.findComboListPage(map);
+        return model;
+    }
 }

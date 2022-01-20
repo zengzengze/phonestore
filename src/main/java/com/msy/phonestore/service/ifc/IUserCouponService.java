@@ -23,4 +23,14 @@ public interface IUserCouponService {
 
     //添加优惠券
     ResponseModel insertCouponMsg(UserCoupon userCoupon)throws Exception;
+
+    //兑换优惠券
+    ResponseModel convertCouponMsg(Map<String,Object> map)throws Exception;
+
+    //退回优惠券
+    ResponseModel updateUserCoupon(UserCoupon userCoupon)throws Exception;
+
+
+    ResponseModel findUserCouponById(Integer userCouponId)throws Exception;
+
 }

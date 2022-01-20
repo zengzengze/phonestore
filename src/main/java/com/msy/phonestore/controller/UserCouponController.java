@@ -43,8 +43,26 @@ public class UserCouponController {
     }
 
     @RequestMapping("/insertCouponMsg")
-    public ResponseModel findUnAvailableCouponList(@RequestBody UserCoupon userCoupon)throws Exception{
+    public ResponseModel insertCouponMsg(@RequestBody UserCoupon userCoupon)throws Exception{
         ResponseModel model = userCouponService.insertCouponMsg(userCoupon);
+        return model;
+    }
+
+    @RequestMapping("/convertCouponMsg")
+    public ResponseModel convertCouponMsg(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = userCouponService.convertCouponMsg(map);
+        return model;
+    }
+
+    @RequestMapping("/updateUserCoupon")
+    public ResponseModel updateUserCoupon(@RequestBody UserCoupon userCoupon)throws Exception{
+        ResponseModel model = userCouponService.updateUserCoupon(userCoupon);
+        return model;
+    }
+
+    @RequestMapping("/findUserCouponById")
+    public ResponseModel findUserCouponById(Integer userCouponId)throws Exception{
+        ResponseModel model = userCouponService.findUserCouponById(userCouponId);
         return model;
     }
 

@@ -1,6 +1,5 @@
 package com.msy.phonestore.service.ifc;
 
-import com.msy.phonestore.pojo.OrderTime;
 import com.msy.phonestore.vo.ResponseModel;
 
 import java.util.Map;
@@ -9,10 +8,9 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  *
  * @Author: zengfanjing
- * @Date: 2022/01/16/11:03
+ * @Date: 2022/01/20/17:41
  * @Description:
  */
-public interface IOrderTimeService {
-
-    ResponseModel findOrderTimeMsg(Map<String,Object> map)throws Exception;
+public interface IPhoneImgService {
+    ResponseModel findPhoneImgMsg(Map<String,Object> map)throws Exception;
 }

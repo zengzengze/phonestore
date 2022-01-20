@@ -14,7 +14,11 @@ import java.util.Map;
  * @Description:
  */
 public interface IntegralMapper extends MPJBaseMapper<Integral> {
+
     @Update("update integral set integralCount=integralCount-(#{pointsOffer}*100) where userId=#{userId}")
     public int updateIntegralMsg(Map<String,Object> map)throws Exception;
 
+    //确认收货获得积分
+    @Update("update integral set integralCount=integralCount+#{integralCount} where userId=#{userId}")
+    public int updateIntegral(Integral integral)throws Exception;
 }

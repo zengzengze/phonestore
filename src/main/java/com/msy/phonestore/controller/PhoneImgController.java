@@ -1,7 +1,8 @@
 package com.msy.phonestore.controller;
 
-import com.msy.phonestore.pojo.Integral;
-import com.msy.phonestore.service.ifc.IntegralService;
+import com.msy.phonestore.pojo.Cart;
+import com.msy.phonestore.service.ifc.ICartService;
+import com.msy.phonestore.service.ifc.IPhoneImgService;
 import com.msy.phonestore.vo.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,20 +16,21 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  *
  * @Author: zengfanjing
- * @Date: 2022/01/12/20:15
+ * @Date: 2021/12/25/15:18
  * @Description:
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/integral")
-public class IntegralController {
-    @Autowired
-    private IntegralService integralService;
+@RequestMapping("/phoneImg")
+public class PhoneImgController {
 
-    @RequestMapping("/findIntegralById")
-    public ResponseModel findIntegralById(Integer userId)throws Exception{
-//        System.out.println(map);
-        ResponseModel model = integralService.findIntegralById(userId);
+    @Autowired
+    private IPhoneImgService phoneImgService;
+
+
+    @RequestMapping("/findPhoneImgMsg")
+    public ResponseModel findPhoneImgMsg(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = phoneImgService.findPhoneImgMsg(map);
         return model;
     }
 

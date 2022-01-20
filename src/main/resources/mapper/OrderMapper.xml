@@ -20,13 +20,14 @@
         <result column="deliveryTime" property="deliveryTime"></result>
         <result column="completeTime" property="completeTime"></result>
 
-        <!--<association property="address" javaType="address">-->
-            <!--<result column="coupon" property="coupon"></result>-->
-            <!--<result column="couponWorth" property="couponWorth"></result>-->
-            <!--<result column="couponType" property="couponType"></result>-->
-            <!--<result column="introduction" property="introduction"></result>-->
-            <!--<result column="couponImg" property="couponImg"></result>-->
-        <!--</association>-->
+        <association property="users" javaType="users">
+            <id column="userId" property="userId"></id>
+            <result column="userName" property="userName"></result>
+            <result column="name" property="name"></result>
+            <result column="userImg" property="userImg"></result>
+            <result column="email" property="email"></result>
+            <result column="phoneNumber" property="phoneNumber"></result>
+        </association>
 
         <collection property="orderDetailets" ofType="orderDetailet">
             <id column="orderDetailetId" property="orderDetailetId"></id>
@@ -69,21 +70,25 @@
 
     <select id="queryMsgByMap" resultMap="order_orderDetailet_" parameterType="map">
         select * from orders o,order_detailet od,phone_detailet pd,
-        phone p,phone_combo pc,phone_assure pa,order_time ot
+        phone p,phone_combo pc,phone_assure pa,order_time ot,users u
         where o.orderid=od.orderid
         and od.phonedetailetid=pd.phonedetailetid
         and pd.phoneid=p.phoneid
         and od.comboid=pc.comboid
         and od.assureid=pa.assureid
         and o.orderId=ot.orderId
+        and o.userid=u.userid
         <if test="orderId!=null and orderId!='' ">
             and o.orderId=#{orderId}
         </if>
         <if test="userId!=null and userId!='' ">
             and o.userid=#{userId}
         </if>
-        <if test="orderState!=null and orderState!='' ">
-            and o.orderState=#{orderState}
+        <if test="orderStateList!=null">
+            and orderState in
+            <foreach collection="orderStateList" item="orderState" open="(" close=")" separator=",">
+                #{orderState}
+            </foreach>
         </if>
         order by o.submitOrderTime desc,ot.orderTime
     </select>

@@ -25,15 +25,7 @@ public class OrderTimeServiceImpl implements IOrderTimeService {
 
     @Autowired
     private OrderTimeMapper orderTimeMapper;
-    @Override
-    public ResponseModel insertOrderTimeMsg(OrderTime orderTime) throws Exception {
-        orderTime.setOrderTime(new Date());
-        int row = orderTimeMapper.insert(orderTime);
-        if(row>0){
-            return ResponseModel.success(ResCode.SUCCESS);
-        }
-        return ResponseModel.fail(ResCode.FAIL);
-    }
+
 
     @Override
     public ResponseModel findOrderTimeMsg(Map<String, Object> map) throws Exception {

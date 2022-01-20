@@ -3,13 +3,17 @@ package com.msy.phonestore.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.msy.phonestore.dto.DeliveryToolsInfo;
+import com.msy.phonestore.mapper.CourierCompanyMapper;
+import com.msy.phonestore.pojo.CourierCompany;
 import com.msy.phonestore.service.ifc.IDeliveryToolsInfoService;
 import com.msy.phonestore.vo.ResCode;
 import com.msy.phonestore.vo.ResponseModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,6 +30,8 @@ import java.util.Map;
  */
 @Service
 public class DeliveryToolsInfoServiceImpl implements IDeliveryToolsInfoService {
+    @Autowired
+    private CourierCompanyMapper courierCompanyMapper;
     @Override
     public ResponseModel findDeliveryMsg(Map<String, Object> map) throws Exception {
 //
@@ -33,10 +39,11 @@ public class DeliveryToolsInfoServiceImpl implements IDeliveryToolsInfoService {
 //        String path = "/kdi";  // 【2】后缀
 //        String appcode = "83dfbd3085a44173856733d0ce36815e"; // 【3】开通服务后 买家中心-查看AppCode
 ////        String no = "SF1145709153444:6364";// 【4】请求参数，详见文档描述
+//
+//        CourierCompany courierCompany = courierCompanyMapper.selectById((Serializable) map.get("courierCompanyId"));
 //        StringBuffer no=new StringBuffer();
-//        if(map.get("deliveryType").equals("SFEXPRESS")){
+//        if(courierCompany.getDeliveryType().equals("SFEXPRESS")){
 //            no.append( map.get("deliveryId"));
-//            System.out.println(map.get("deliveryId"));
 //            no.append(":");
 //            no.append(map.get("phoneNumber").toString().substring(7));
 //        }else {
@@ -44,7 +51,7 @@ public class DeliveryToolsInfoServiceImpl implements IDeliveryToolsInfoService {
 //        }
 ////        String type = "SFEXPRESS"; //  【4】请求参数，不知道可不填 95%能自动识别
 //
-//        String type=(String)map.get("deliveryType");
+//        String type=courierCompany.getDeliveryType();
 //        String urlSend = host + path + "?no=" + no.toString() +"&type="+type;  // 【5】拼接请求链接
 //        try {
 //            URL url = new URL(urlSend);

@@ -3,17 +3,25 @@ package com.msy.phonestore.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.msy.phonestore.dto.CartAndUserAndPhoneAndPhoneDetailetDTO;
+import com.msy.phonestore.dto.OrderAndUserDTO;
 import com.msy.phonestore.dto.OrderDetailetAndPhoneAndPhoneDetailetAndComboAndAssureDTO;
 import com.msy.phonestore.mapper.*;
 import com.msy.phonestore.pojo.*;
 import com.msy.phonestore.service.ifc.IOrderService;
 import com.msy.phonestore.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +32,8 @@ import java.util.*;
  */
 @Service
 public class OrderServiceImpl implements IOrderService {
+
+
 
     @Autowired
     private OrderMapper orderMapper;
@@ -39,27 +49,15 @@ public class OrderServiceImpl implements IOrderService {
     private OrderTimeMapper orderTimeMapper;
     @Autowired
     private OrderAddressMapper orderAddressMapper;
+    @Autowired
+    private ParcelMapper parcelMapper;
 
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Transactional
     @Override
     public ResponseModel findOrdersAndOrderDetailet(Map<String, Object> map) throws Exception {
-//        List<Orders> orders= orderMapper.selectByMap(map);
-//        Orders order1=new Orders();
-//        for(Orders orders2:orders){
-//           order1 = orderMapper.selectById(orders2.getOrderId());
-//            MPJLambdaWrapper mpjLambdaWrapper=new MPJLambdaWrapper<>()
-//                    .selectAll(OrderDetailet.class)
-//                    .select(Phone::getPname,Phone::getPhoneImg)
-//                    .select(PhoneDetailet::getColor,PhoneDetailet::getPrice,PhoneDetailet::getRam,PhoneDetailet::getStorage,PhoneDetailet::getVersion)
-//                    .select(PhoneCombo::getCombo,PhoneCombo::getComboPrice)
-//                    .select(PhoneAssure::getAssure,PhoneAssure::getAssurePrice,PhoneAssure::getAssureImg)
-//                    .innerJoin(PhoneDetailet.class,PhoneDetailet::getPDetailetId,OrderDetailet::getPhoneDetailetId)
-//                    .innerJoin(Phone.class,Phone::getPhoneId,PhoneDetailet::getPhoneId)
-//                    .innerJoin(PhoneCombo.class,PhoneCombo::getComboId,OrderDetailet::getComboId)
-//                    .innerJoin(PhoneAssure.class,PhoneAssure::getAssureId,OrderDetailet::getAssureId)
-//                    .eq(OrderDetailet::getOrderId,orders2.getOrderId());
-//            List<OrderDetailetAndPhoneAndPhoneDetailetAndComboAndAssureDTO> DTOs = orderDetailetMapper.selectJoinList(OrderDetailetAndPhoneAndPhoneDetailetAndComboAndAssureDTO.class, mpjLambdaWrapper);
-//            orders2.setOrderAndAllAndAssureDTOList(DTOs);
-//        }
 
         List<Orders> orders = orderMapper.queryMsgByMap(map);
         return ResponseModel.success(ResCode.SUCCESS,orders);
@@ -75,11 +73,14 @@ public class OrderServiceImpl implements IOrderService {
         order.setSubmitOrderTime(new Date());
         int row = orderMapper.insert(order);
 
+        //设置订单有效时间
+        redisTemplate.opsForValue().set("orderId"+orderId,orderId,30, TimeUnit.MINUTES);
+
         //插入进订单地址
         OrderAddress orderAddress=order.getOrderAddress();
         orderAddress.setOrderId(orderId);
-        int row8 = orderAddressMapper.insert(orderAddress);
-        if(row8==0){
+        int row2 = orderAddressMapper.insert(orderAddress);
+        if(row2==0){
             return ResponseModel.fail(ResCode.FAIL);
         }
 
@@ -88,8 +89,8 @@ public class OrderServiceImpl implements IOrderService {
         orderTime.setOrderId(orderId);
         orderTime.setOrderTime(new Date());
         orderTime.setOrderTimeContent("你的订单已提交,等待系统确认!");
-        int row7 = orderTimeMapper.insert(orderTime);
-        if(row7==0){
+        int row3 = orderTimeMapper.insert(orderTime);
+        if(row3==0){
             return ResponseModel.fail(ResCode.FAIL);
         }
 
@@ -97,22 +98,20 @@ public class OrderServiceImpl implements IOrderService {
         Address address=new Address();
         address.setAddressId(order.getAddressId());
         address.setState(0);
-        int row3 = addressMapper.updateById(address);
+        int row4 = addressMapper.updateById(address);
 
         //使用的优惠券
-            if(order.getCouponId()!=0){
+            if(order.getUserCouponId()!=0){
                 UserCoupon userCoupon = userCouponMapper.selectOne(new QueryWrapper<UserCoupon>()
-                        .eq("couponId", order.getCouponId())
+                        .eq("userCouponId", order.getUserCouponId())
                         .eq("userId", order.getUserId()));
-                if(userCoupon!=null && userCoupon.getUserCouponCount()-1!=0){
-                    int row4 = userCouponMapper.updateUserCouponCount(userCoupon.getUserCouponId());
-                    if(row4==0){
-                        return ResponseModel.fail(ResCode.FAIL);
-                    }
-                }else {
-                    int row6 = userCouponMapper.deleteById(userCoupon.getUserCouponId());
-                    if(row6==0){
-                        return ResponseModel.fail(ResCode.FAIL);
+                if(userCoupon!=null){
+                    if(userCoupon.getUserCouponCount()-1!=-1){
+                        userCoupon.setUserCouponCount(userCoupon.getUserCouponCount()-1);
+                        int row5 = userCouponMapper.updateById(userCoupon);
+                        if(row5==0){
+                            return ResponseModel.fail(ResCode.FAIL);
+                        }
                     }
                 }
             }
@@ -122,8 +121,8 @@ public class OrderServiceImpl implements IOrderService {
             Map<String,Object> map1=new HashMap<>();
             map1.put("userId",order.getUserId());
             map1.put("pointsOffer", order.getPointsOffer());
-            int row5 = integralMapper.updateIntegralMsg(map1);
-            if(row5==0){
+            int row6 = integralMapper.updateIntegralMsg(map1);
+            if(row6==0){
                 return ResponseModel.fail(ResCode.FAIL);
             }
         }
@@ -140,12 +139,12 @@ public class OrderServiceImpl implements IOrderService {
             orderDetailet.setPhoneCount(dto1.getQuantity());
             orderDetailet.setAssureCount(1);
 
-            int row2 = orderDetailetMapper.insert(orderDetailet);
-            if(row2>0){
+            int row7 = orderDetailetMapper.insert(orderDetailet);
+            if(row7>0){
                 row1++;
             }
         }
-        if(row>0 && row1>0 && row3>0){
+        if(row>0 && row1>0 && row4>0){
             return ResponseModel.success(ResCode.SUCCESS);
         }
         return ResponseModel.fail(ResCode.FAIL);
@@ -178,12 +177,98 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public ResponseModel paymentMsg(Orders order) throws Exception {
+    @Transactional
+    public ResponseModel paymentMsg(Map<String,Object> map) throws Exception {
+        //支付更改订单状态
+        Orders order = JSON.parseObject(JSON.toJSONString(map.get("order")), Orders.class);
         order.setPaymentTime(new Date());
         int row = orderMapper.updateById(order);
-        if(row>0){
+        redisTemplate.delete("orderId"+order.getOrderId());
+
+        //插入支付时间
+        OrderTime orderTime=JSON.parseObject(JSON.toJSONString(map.get("orderTime")), OrderTime.class);
+        orderTime.setOrderTime(new Date());
+        int row1 = orderTimeMapper.insert(orderTime);
+
+        if(row>0 && row1>0){
             return ResponseModel.success(ResCode.SUCCESS);
         }
         return ResponseModel.fail(ResCode.FAIL);
     }
+
+    @Override
+    @Transactional
+    public ResponseModel confirmReceiptGoods(Map<String, Object> map) throws Exception {
+        Orders order = JSON.parseObject(JSON.toJSONString(map.get("order")), Orders.class);
+        int row = orderMapper.updateById(order);
+
+        OrderTime orderTime=JSON.parseObject(JSON.toJSONString(map.get("orderTime")), OrderTime.class);
+        orderTime.setOrderTime(new Date());
+        int row1 = orderTimeMapper.insert(orderTime);
+
+        Integral integral=JSON.parseObject(JSON.toJSONString(map.get("integral")), Integral.class);
+        int row2 = integralMapper.updateIntegral(integral);
+        if(row>0 && row1>0 && row2>0){
+            return ResponseModel.success(ResCode.SUCCESS);
+        }
+        return ResponseModel.fail(ResCode.FAIL);
+    }
+
+    @Override
+    @Transactional
+    public ResponseModel cancelOrderMsg(Map<String, Object> map) throws Exception {
+
+        Orders order = JSON.parseObject(JSON.toJSONString(map.get("order")), Orders.class);
+        redisTemplate.delete("orderId"+order.getOrderId());
+        //取消订单更改订单状态
+        int row = orderMapper.updateById(order);
+
+        UserCoupon userCoupon = JSON.parseObject(JSON.toJSONString(map.get("userCoupon")), UserCoupon.class);
+        //退回优惠券
+        userCoupon.setUserCouponCount(1);
+        int row1 = userCouponMapper.updateById(userCoupon);
+
+        OrderTime orderTime=JSON.parseObject(JSON.toJSONString(map.get("orderTime")), OrderTime.class);
+        orderTime.setOrderTime(new Date());
+        //插入时间状态
+        int row2 = orderTimeMapper.insert(orderTime);
+
+        if(row>0 && row1>0 && row2>0){
+            return ResponseModel.success(ResCode.SUCCESS);
+        }
+        return ResponseModel.fail(ResCode.FAIL);
+    }
+
+    @Override
+    public ResponseModel findOrderListPageMsg(Map<String, Object> map) throws Exception {
+        MPJLambdaWrapper mpjLambdaWrapper=new MPJLambdaWrapper<Orders>()
+                .selectAll(Orders.class)
+                .select(Users::getName,Users::getGender,Users::getBirthday,Users::getPhoneNumber,Users::getUserImg,Users::getUserName)
+                .innerJoin(Users.class,Users::getUserId,Orders::getUserId)
+                .eq(map.get("orderState")!=null,Orders::getOrderState,map.get("orderState"));
+        Page orderPage=new Page<>((Integer)map.get("pageNumber"),(Integer)map.get("pageSize"));
+        IPage<OrderAndUserDTO> orderAndUserDTOIPage = orderMapper.selectJoinPage(orderPage, OrderAndUserDTO.class, mpjLambdaWrapper);
+        return ResponseModel.success(ResCode.SUCCESS,orderAndUserDTOIPage);
+    }
+
+    @Override
+    @Transactional
+    public ResponseModel confirmDeliveryMsg(Map<String, Object> map) throws Exception {
+
+        Orders order = JSON.parseObject(JSON.toJSONString(map.get("order")), Orders.class);
+        int row = orderMapper.updateById(order);
+        OrderTime orderTime=JSON.parseObject(JSON.toJSONString(map.get("orderTime")), OrderTime.class);
+        orderTime.setOrderTime(new Date());
+        int row1 = orderTimeMapper.insert(orderTime);
+
+        Parcel parcel = JSON.parseObject(JSON.toJSONString(map.get("parcel")), Parcel.class);
+        parcel.setDeliveryTime(new Date());
+        int row2 = parcelMapper.insert(parcel);
+
+        if(row>0 && row1>0 && row2>0){
+            return ResponseModel.success(ResCode.SUCCESS);
+        }
+        return ResponseModel.fail(ResCode.FAIL);
+    }
+
 }

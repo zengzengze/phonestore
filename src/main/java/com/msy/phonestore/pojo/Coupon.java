@@ -31,11 +31,11 @@ public class Coupon {
     @TableField(value = "couponType")
     private Integer couponType;
 
-    @JsonFormat(pattern = "yyyy/MM/dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
     @TableField(value = "startTime")
     private Date startTime;
 
-    @JsonFormat(pattern = "yyyy/MM/dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
     @TableField(value = "endTime")
     private Date endTime;
 
@@ -48,6 +48,8 @@ public class Coupon {
     private String introduction;
     @TableField(value = "couponImg")
     private String couponImg;
+    @TableField(value = "convertCode")
+    private String convertCode;
 
     @TableField(exist = false)
     private Phone phone;

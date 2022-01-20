@@ -20,9 +20,9 @@ public class UserCoupon {
     private Integer userId;
     @TableField(value = "couponId")
     private Integer couponId;
+
     @TableField(value = "userCouponCount")
     private Integer userCouponCount;
-
     @TableField(exist = false)
     private Coupon coupon;
 }

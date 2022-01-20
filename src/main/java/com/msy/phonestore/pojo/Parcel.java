@@ -23,8 +23,9 @@ public class Parcel {
     private String orderId;
     @TableField(value = "deliveryId")
     private String deliveryId;
-    @TableField(value = "deliveryType")
-    private String deliveryType;
+    @TableField(value = "courierCompanyId")
+    private String courierCompanyId;
+
     @TableField(value = "phoneNumber")
     private String phoneNumber;
 

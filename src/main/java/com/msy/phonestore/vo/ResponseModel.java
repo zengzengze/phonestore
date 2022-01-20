@@ -52,6 +52,18 @@ public class ResponseModel {
     }
 
     /**
+     * 失败返回信息
+     * @return
+     */
+    public static ResponseModel fail(ResCode resCode,Object obj){
+        ResponseModel model =new ResponseModel();
+        model.code=resCode.getCode();
+        model.flag=resCode.getFlag();
+        model.msg=resCode.getMsg();
+        model.obj=obj;
+        return  model;
+    }
+    /**
      * 出现异常返回异常信息
      * @return
      */

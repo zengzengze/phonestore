@@ -51,8 +51,35 @@ public class OrderController {
     }
 
     @RequestMapping("/paymentMsg")
-    public ResponseModel paymentMsg(@RequestBody Orders order) throws Exception{
-        ResponseModel model = orderService.paymentMsg(order);
+    public ResponseModel paymentMsg(@RequestBody Map<String,Object> map) throws Exception{
+        ResponseModel model = orderService.paymentMsg(map);
         return model;
     }
+
+    @RequestMapping("/confirmReceiptGoods")
+    public ResponseModel confirmReceiptGoods(@RequestBody Map<String,Object> map) throws Exception{
+        ResponseModel model = orderService.confirmReceiptGoods(map);
+        return model;
+    }
+
+
+    @RequestMapping("/cancelOrderMsg")
+    public ResponseModel cancelOrderMsg(@RequestBody Map<String,Object> map) throws Exception{
+        ResponseModel model = orderService.cancelOrderMsg(map);
+        return model;
+    }
+
+    //后台方法
+    @RequestMapping("/findOrderListPageMsg")
+    public ResponseModel findOrderListPageMsg(@RequestBody Map<String,Object> map) throws Exception{
+        ResponseModel model = orderService.findOrderListPageMsg(map);
+        return model;
+    }
+
+    @RequestMapping("/confirmDeliveryMsg")
+    public ResponseModel confirmDeliveryMsg(@RequestBody Map<String,Object> map) throws Exception{
+        ResponseModel model = orderService.confirmDeliveryMsg(map);
+        return model;
+    }
+
 }

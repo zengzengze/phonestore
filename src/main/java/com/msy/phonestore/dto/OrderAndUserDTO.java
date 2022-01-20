@@ -1,22 +1,21 @@
-package com.msy.phonestore.pojo;
+package com.msy.phonestore.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.msy.phonestore.dto.CartAndUserAndPhoneAndPhoneDetailetDTO;
-import com.msy.phonestore.dto.OrderDetailetAndPhoneAndPhoneDetailetAndComboAndAssureDTO;
 import lombok.Data;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.Date;
-import java.util.List;
 
+/**
+ * Created with IntelliJ IDEA.
+ *
+ * @Author: zengfanjing
+ * @Date: 2022/01/20/13:29
+ * @Description:
+ */
 @Data
-@TableName(value = "orders")
-//@KeySequence(value = "SEQ_ORDERS_ORDERID")
-public class Orders {
-
-//    @TableId(value = "id",type = IdType.INPUT)
-//    private Integer id;
+public class OrderAndUserDTO {
 
     @TableId(value = "orderId")
     private String orderId;
@@ -64,25 +63,18 @@ public class Orders {
     @TableField(value = "completeTime")
     private Date completeTime;
 
-    @TableField(exist = false)
-    private List<OrderDetailet> orderDetailets;
-
-    @TableField(exist = false)
-    private List<OrderTime> orderTimes;
-
-    @TableField(exist = false)
-    private OrderAddress orderAddress;
-
-    @TableField(exist = false)
-    private Users users;
-
-//    @TableField(exist = false)
-//    private Coupon coupon;
-
-//    @TableField(exist = false)
-//    private List<OrderDetailetAndPhoneAndPhoneDetailetAndComboAndAssureDTO> DTOList;
-
-    @TableField(exist = false)
-    private List<CartAndUserAndPhoneAndPhoneDetailetDTO> cartDTOList;
-
+    @TableField(value = "userName")
+    private String userName;
+    private String name;
+    private String password;
+    private Integer gender;
+    private String birthday;
+    @TableField(value = "userImg")
+    private String userImg;
+    private String province;
+    private String city;
+    private Integer grade;
+    private String email;
+    @TableField(value = "phoneNumber")
+    private String phoneNumber;
 }

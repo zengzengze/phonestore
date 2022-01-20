@@ -51,4 +51,11 @@ public class CouponController {
         ResponseModel model = couponService.deleteCouponById(map.get("ids"));
         return model;
     }
+
+    //后台使用
+    @RequestMapping("/findCouponListPagMsg")
+    public ResponseModel findCouponListPagMsg(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = couponService.findCouponListPagMsg(map);
+        return model;
+    }
 }
