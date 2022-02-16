@@ -25,5 +25,5 @@ public interface UserCouponMapper extends MPJBaseMapper<UserCoupon> {
     @Update("update user_coupon set userCouponCount=userCouponCount-1 where userCouponId=#{userCouponId}")
     public int updateUserCouponCount(Integer userCouponId)throws Exception;
 
-    public UserCoupon findUserCouponBuId(Integer userCouponId)throws Exception;
+    public UserCoupon findUserCouponById(Integer userCouponId)throws Exception;
 }

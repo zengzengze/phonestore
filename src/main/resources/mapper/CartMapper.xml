@@ -3,16 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.msy.phonestore.mapper.CartMapper">
-    <resultMap id="Cart_PhoneDetailet_" type="Cart">
+    <resultMap id="Cart_PhoneDetail_" type="Cart">
         <id column="cartId" property="cartId"></id>
         <result column="userId" property="userId"></result>
-        <result column="phoneDetailetId" property="phoneDetailetId"></result>
+        <result column="phoneDetailId" property="phoneDetailId"></result>
         <result column="quantity" property="quantity"></result>
         <result column="comboId" property="comboId"></result>
         <result column="assureId" property="assureId"></result>
         <result column="cartState" property="cartState"></result>
-        <association property="phoneDetailet" javaType="phoneDetailet">
-            <id column="phoneDetailetId" property="phoneDetailetId"></id>
+        <association property="phoneDetail" javaType="phoneDetail">
+            <id column="phoneDetailId" property="phoneDetailId"></id>
             <result column="color" property="color"></result>
             <result column="ram" property="ram"></result>
             <result column="storage" property="storage"></result>
@@ -38,9 +38,9 @@
 
     </resultMap>
 
-    <select id="queryMsgByMap" resultMap="Cart_PhoneDetailet_" parameterType="int">
-            select * from cart a,phone_detailet pd,phone p,phone_combo pc,phone_assure pa
-            where a.pdetailetid=pd.pdetailetid
+    <select id="queryMsgByMap" resultMap="Cart_PhoneDetail_" parameterType="int">
+            select * from cart a,phone_Detail pd,phone p,phone_combo pc,phone_assure pa
+            where a.pDetailid=pd.pDetailid
             and pd.phoneid=p.phoneid
             and p.phoneid=pa.phoneid
             and a.comboid=pc.comboid

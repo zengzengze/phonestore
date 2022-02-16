@@ -24,16 +24,29 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
-    @RequestMapping("/findOrdersList")
-    public ResponseModel findOrdersList(@RequestBody Map<String,Object> map)throws Exception{
+    @RequestMapping("/findOrderPageList")
+    public ResponseModel findOrderPageList(@RequestBody Map<String,Object> map)throws Exception{
         System.out.println(map);
-        ResponseModel model = orderService.findOrdersAndOrderDetailet(map);
+        ResponseModel model = orderService.findOrderPageList(map);
+        return model;
+    }
+
+    @RequestMapping("/findOrderOneByMap")
+    public ResponseModel findOrderOneByMap(@RequestBody Map<String,Object> map)throws Exception{
+        System.out.println(map);
+        ResponseModel model = orderService.findOrderOneByMap(map);
+        return model;
+    }
+
+    @RequestMapping("/findOrderListByMap")
+    public ResponseModel findOrderListByMap(@RequestBody Map<String,Object> map)throws Exception{
+        System.out.println(map);
+        ResponseModel model = orderService.findOrderListByMap(map);
         return model;
     }
 
     @RequestMapping("/insertOrder")
     public ResponseModel insertOrder(@RequestBody Map<String,Object> map) throws Exception{
-//        System.out.println(map.get("order"));
         ResponseModel model = orderService.insertOrder(map);
         return model;
     }

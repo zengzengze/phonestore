@@ -1,6 +1,5 @@
 package com.msy.phonestore.interceptor;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;

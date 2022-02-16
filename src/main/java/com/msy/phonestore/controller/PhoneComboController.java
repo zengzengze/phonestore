@@ -1,5 +1,6 @@
 package com.msy.phonestore.controller;
 
+import com.msy.phonestore.pojo.PhoneCombo;
 import com.msy.phonestore.service.ifc.IPhoneComboService;
 import com.msy.phonestore.vo.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,22 @@ public class PhoneComboController {
         return model;
     }
 
+    @RequestMapping("/findByPhoneComboId")
+    public ResponseModel findByPhoneComboId(Integer phoneComboId)throws Exception{
+        ResponseModel model = phoneComboService.findByPhoneComboId(phoneComboId);
+        return model;
+    }
+
     //后台使用
     @RequestMapping("/findComboListPage")
     public ResponseModel findComboListPage(@RequestBody Map<String,Object> map)throws Exception{
         ResponseModel model = phoneComboService.findComboListPage(map);
+        return model;
+    }
+
+    @RequestMapping("/insertComboMsg")
+    public ResponseModel insertComboMsg(@RequestBody PhoneCombo phoneCombo)throws Exception{
+        ResponseModel model = phoneComboService.insertComboMsg(phoneCombo);
         return model;
     }
 }

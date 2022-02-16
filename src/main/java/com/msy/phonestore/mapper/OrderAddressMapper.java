@@ -11,4 +11,5 @@ import com.msy.phonestore.pojo.OrderAddress;
  * @Description:
  */
 public interface OrderAddressMapper extends MPJBaseMapper<OrderAddress> {
+
 }

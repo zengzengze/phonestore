@@ -26,9 +26,9 @@ public class BuyNowController {
     @Autowired
     private IBuyNowService buyNowService;
 
-    @RequestMapping("/findByMapMsg")
-    public ResponseModel findByMapMsg(@RequestBody Map<String,Object> map)throws Exception{
-        ResponseModel model = buyNowService.findByMapMsg(map);
+    @RequestMapping("/getfindBuyNowPhoneDetail")
+    public ResponseModel getfindBuyNowPhoneDetail(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = buyNowService.getfindBuyNowPhoneDetail(map);
         return model;
     }
 }

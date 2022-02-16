@@ -24,13 +24,18 @@ public class Phone {
     private Integer remark;
     private double praise;
 
+
     @TableField(exist = false)
     private PhoneType phoneType;
 
+
     @TableField(exist = false)
-    private PhoneDetailet phoneDetailet;
+    private List<PhoneDetail> phoneDetailList;
 
     @TableField(exist = false)
     private List<PhoneAssure> phoneAssureList;
+
+    @TableField(exist = false)
+    private List<PhoneCombo> phoneComboList;
 
 }

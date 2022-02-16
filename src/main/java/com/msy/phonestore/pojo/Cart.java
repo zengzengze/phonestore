@@ -13,51 +13,19 @@ public class Cart {
     @TableField(value = "userId")
     private Integer userId;
 
-    @TableField(value = "phoneDetailetId")
-    private Integer phoneDetailetId;
+    @TableField(value = "phoneDetailId")
+    private Integer phoneDetailId;
     private Integer quantity;
     private Integer comboId;
     private Integer assureId;
     private Integer cartState;
 
     @TableField(exist = false)
-    private PhoneDetailet phoneDetailet;
+    private PhoneDetail phoneDetail;
     @TableField(exist = false)
     private PhoneCombo phoneCombo;
     @TableField(exist = false)
     private PhoneAssure phoneAssure;
-
-    public PhoneDetailet getPhoneDetailet() {
-        return phoneDetailet;
-    }
-
-    public void setPhoneDetailet(PhoneDetailet phoneDetailet) {
-        this.phoneDetailet = phoneDetailet;
-    }
-
-    public PhoneCombo getPhoneCombo() {
-        return phoneCombo;
-    }
-
-    public void setPhoneCombo(PhoneCombo phoneCombo) {
-        this.phoneCombo = phoneCombo;
-    }
-
-    public PhoneAssure getPhoneAssure() {
-        return phoneAssure;
-    }
-
-    public void setPhoneAssure(PhoneAssure phoneAssure) {
-        this.phoneAssure = phoneAssure;
-    }
-
-    public Integer getCartState() {
-        return cartState;
-    }
-
-    public void setCartState(Integer cartState) {
-        this.cartState = cartState;
-    }
 
     public Integer getCartId() {
         return cartId;
@@ -75,12 +43,12 @@ public class Cart {
         this.userId = userId;
     }
 
-    public Integer getPhoneDetailetId() {
-        return phoneDetailetId;
+    public Integer getPhoneDetailId() {
+        return phoneDetailId;
     }
 
-    public void setPhoneDetailetId(Integer phoneDetailetId) {
-        this.phoneDetailetId = phoneDetailetId;
+    public void setPhoneDetailId(Integer phoneDetailId) {
+        this.phoneDetailId = phoneDetailId;
     }
 
     public Integer getQuantity() {
@@ -105,5 +73,37 @@ public class Cart {
 
     public void setAssureId(Integer assureId) {
         this.assureId = assureId;
+    }
+
+    public Integer getCartState() {
+        return cartState;
+    }
+
+    public void setCartState(Integer cartState) {
+        this.cartState = cartState;
+    }
+
+    public PhoneDetail getPhoneDetail() {
+        return phoneDetail;
+    }
+
+    public void setPhoneDetail(PhoneDetail phoneDetail) {
+        this.phoneDetail = phoneDetail;
+    }
+
+    public PhoneCombo getPhoneCombo() {
+        return phoneCombo;
+    }
+
+    public void setPhoneCombo(PhoneCombo phoneCombo) {
+        this.phoneCombo = phoneCombo;
+    }
+
+    public PhoneAssure getPhoneAssure() {
+        return phoneAssure;
+    }
+
+    public void setPhoneAssure(PhoneAssure phoneAssure) {
+        this.phoneAssure = phoneAssure;
     }
 }

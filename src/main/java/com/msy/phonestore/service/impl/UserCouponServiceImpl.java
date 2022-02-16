@@ -40,7 +40,7 @@ public class UserCouponServiceImpl implements IUserCouponService {
     @Override
     public ResponseModel findCouponListMsg(Map<String, Object> map) throws Exception {
         List<UserCoupon> userCouponList = userCouponMapper.queryMsgByMap(map);
-        return ResponseModel.success(ResCode.SUCCESS,userCouponList);
+        return ResponseModel.success(ResCode.SUCCESS, userCouponList);
 
 //        Date date = new Date();
 //        MPJLambdaWrapper mpjLambdaWrapper=new MPJLambdaWrapper<>()
@@ -60,7 +60,7 @@ public class UserCouponServiceImpl implements IUserCouponService {
     }
 
     @Override
-    public ResponseModel findUnAvailableCouponList(Map<String,Object> map) throws Exception {
+    public ResponseModel findUnAvailableCouponList(Map<String, Object> map) throws Exception {
 //        Date date=new Date();
 //        MPJLambdaWrapper mpjLambdaWrapper=new MPJLambdaWrapper<>()
 //                .selectAll(UserCoupon.class)
@@ -76,14 +76,14 @@ public class UserCouponServiceImpl implements IUserCouponService {
 //        return ResponseModel.success(ResCode.SUCCESS,DTOS);
 
         List<UserCoupon> userCouponList = userCouponMapper.findUnAvailableCouponList(map);
-        return ResponseModel.success(ResCode.SUCCESS,userCouponList);
+        return ResponseModel.success(ResCode.SUCCESS, userCouponList);
     }
 
     @Override
     public ResponseModel insertCouponMsg(UserCoupon userCoupon) throws Exception {
 
         int row = userCouponMapper.insert(userCoupon);
-        if(row>0){
+        if (row > 0) {
             return ResponseModel.success(ResCode.SUCCESS);
         }
         return ResponseModel.fail(ResCode.FAIL);
@@ -91,37 +91,41 @@ public class UserCouponServiceImpl implements IUserCouponService {
 
     @Override
     public ResponseModel convertCouponMsg(Map<String, Object> map) throws Exception {
-        Coupon coupon=couponMapper.selectOne(new QueryWrapper<Coupon>().eq("convertCode",map.get("convertCode")));
+        Coupon coupon = couponMapper.selectOne(new QueryWrapper<Coupon>().eq("convertCode", map.get("convertCode")));
+        if (coupon != null) {
+            UserCoupon userCoupon1 = userCouponMapper.selectOne(new QueryWrapper<UserCoupon>()
+                    .eq("userId", map.get("userId"))
+                    .eq("couponId", coupon.getCouponId()));
 
-        UserCoupon userCoupon1 = userCouponMapper.selectOne(new QueryWrapper<UserCoupon>()
-                .eq("userId", map.get("userId"))
-                .eq("couponId", coupon.getCouponId()));
+            if (userCoupon1 == null) {
+                if (coupon.getCouponCount() - 1 != -1) {
 
-        if(userCoupon1==null){
-            if(coupon.getCouponCount()-1!=-1){
+                    UserCoupon userCoupon = new UserCoupon();
+                    userCoupon.setCouponId(coupon.getCouponId());
+                    userCoupon.setUserId((Integer) map.get("userId"));
+                    userCoupon.setUserCouponCount(1);
+                    int row = userCouponMapper.insert(userCoupon);
 
-                UserCoupon userCoupon=new UserCoupon();
-                userCoupon.setCouponId(coupon.getCouponId());
-                userCoupon.setUserId((Integer) map.get("userId"));
-                userCoupon.setUserCouponCount(1);
-                int row = userCouponMapper.insert(userCoupon);
+                    coupon.setCouponCount(coupon.getCouponCount() - 1);
+                    int row1 = couponMapper.updateById(coupon);
 
-                coupon.setCouponCount(coupon.getCouponCount()-1);
-                int row1 = couponMapper.updateById(coupon);
+                    if (row > 0 && row1 > 0) {
+                        return ResponseModel.success(ResCode.SUCCESS);
+                    } else {
+                        return ResponseModel.fail(ResCode.FAIL);
+                    }
 
-                if(row>0 && row1>0){
-                    return ResponseModel.success(ResCode.SUCCESS);
-                }else {
-                    return ResponseModel.fail(ResCode.FAIL);
+                } else {
+                    return ResponseModel.fail(ResCode.FAIL, "优惠券已兑完!");
                 }
 
-            }else {
-                return ResponseModel.fail(ResCode.FAIL,"优惠券已兑完!");
+            } else {
+                return ResponseModel.fail(ResCode.FAIL, "你已经兑换过优惠券了!");
             }
-
         }else {
-            return ResponseModel.fail(ResCode.FAIL,"你已经兑换过优惠券了!");
+            return ResponseModel.fail(ResCode.FAIL, "兑换码错误，请重新输入!");
         }
+
     }
 
     @Override
@@ -130,7 +134,7 @@ public class UserCouponServiceImpl implements IUserCouponService {
         //退回优惠券
         userCoupon.setUserCouponCount(1);
         int row = userCouponMapper.updateById(userCoupon);
-        if(row>0){
+        if (row > 0) {
             return ResponseModel.success(ResCode.SUCCESS);
         }
         return ResponseModel.fail(ResCode.FAIL);
@@ -138,7 +142,7 @@ public class UserCouponServiceImpl implements IUserCouponService {
 
     @Override
     public ResponseModel findUserCouponById(Integer userCouponId) throws Exception {
-        UserCoupon userCoupon = userCouponMapper.findUserCouponBuId(userCouponId);
-        return ResponseModel.success(ResCode.SUCCESS,userCoupon);
+        UserCoupon userCoupon = userCouponMapper.findUserCouponById(userCouponId);
+        return ResponseModel.success(ResCode.SUCCESS, userCoupon);
     }
 }

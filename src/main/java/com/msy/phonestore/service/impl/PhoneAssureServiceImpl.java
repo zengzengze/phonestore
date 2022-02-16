@@ -35,10 +35,6 @@ public class PhoneAssureServiceImpl implements IPhoneAssureService {
         List<PhoneAssure> phoneAssures = phoneAssureMapper.selectByMap(map);
         return ResponseModel.success(ResCode.SUCCESS,phoneAssures);
     }
-    @Override
-    public ResponseModel findById(Integer[] ids) throws Exception {
-        return null;
-    }
 
     @Override
     public ResponseModel findAssureListPage(Map<String, Object> map) throws Exception {
@@ -52,5 +48,42 @@ public class PhoneAssureServiceImpl implements IPhoneAssureService {
 
         IPage<PhoneAssureAndPhoneAndPhoneTypeDTO> pageDTOs = phoneAssureMapper.selectJoinPage(assurePage, PhoneAssureAndPhoneAndPhoneTypeDTO.class, mpjLambdaWrapper);
         return ResponseModel.success(ResCode.SUCCESS,pageDTOs);
+    }
+
+    @Override
+    public ResponseModel updatePhoneAssureMsg(PhoneAssure phoneAssure) throws Exception {
+        int row = phoneAssureMapper.updateById(phoneAssure);
+        if(row>0){
+            return ResponseModel.success(ResCode.SUCCESS);
+        }
+        return ResponseModel.fail(ResCode.FAIL);
+    }
+
+    @Override
+    public ResponseModel insertPhoneAssureMsg(PhoneAssure phoneAssure) throws Exception {
+        int row = phoneAssureMapper.insert(phoneAssure);
+        if(row>0){
+            return ResponseModel.success(ResCode.SUCCESS);
+        }
+        return ResponseModel.fail(ResCode.FAIL);
+    }
+
+    @Override
+    public ResponseModel findPhoneAssureById(Integer phoneAssureId) throws Exception {
+        System.out.println("11111111111111111"+phoneAssureId);
+        PhoneAssure phoneAssure = phoneAssureMapper.selectById(phoneAssureId);
+        return ResponseModel.success(ResCode.SUCCESS,phoneAssure);
+    }
+
+    @Override
+    public ResponseModel deletePhoneAssureByIds(Integer[] ids) throws Exception {
+        int row=0;
+        for(int i=0;i<ids.length;i++){
+            row += phoneAssureMapper.deleteById(ids[i]);
+        }
+        if(row==ids.length){
+            return ResponseModel.success(ResCode.SUCCESS);
+        }
+        return ResponseModel.fail(ResCode.FAIL);
     }
 }

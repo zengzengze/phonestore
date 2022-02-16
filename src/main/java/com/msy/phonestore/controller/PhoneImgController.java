@@ -1,6 +1,7 @@
 package com.msy.phonestore.controller;
 
 import com.msy.phonestore.pojo.Cart;
+import com.msy.phonestore.pojo.PhoneImg;
 import com.msy.phonestore.service.ifc.ICartService;
 import com.msy.phonestore.service.ifc.IPhoneImgService;
 import com.msy.phonestore.vo.ResponseModel;
@@ -31,6 +32,12 @@ public class PhoneImgController {
     @RequestMapping("/findPhoneImgMsg")
     public ResponseModel findPhoneImgMsg(@RequestBody Map<String,Object> map)throws Exception{
         ResponseModel model = phoneImgService.findPhoneImgMsg(map);
+        return model;
+    }
+
+    @RequestMapping("/updatePhoneImgByMapMsg")
+    public ResponseModel updatePhoneImgByMapMsg(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = phoneImgService.updatePhoneImgByMapMsg(map);
         return model;
     }
 

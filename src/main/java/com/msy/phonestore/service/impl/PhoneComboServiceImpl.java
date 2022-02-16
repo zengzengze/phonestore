@@ -2,14 +2,12 @@ package com.msy.phonestore.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.yulichang.base.MPJBaseMapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.msy.phonestore.dto.PhoneAssureAndPhoneAndPhoneTypeDTO;
 import com.msy.phonestore.dto.PhoneComboAndPhoneAndPhoneTypeDTO;
 import com.msy.phonestore.mapper.PhoneComboMapper;
-import com.msy.phonestore.pojo.Phone;
-import com.msy.phonestore.pojo.PhoneAssure;
-import com.msy.phonestore.pojo.PhoneCombo;
-import com.msy.phonestore.pojo.PhoneType;
+import com.msy.phonestore.pojo.*;
 import com.msy.phonestore.service.ifc.IPhoneComboService;
 import com.msy.phonestore.vo.ResCode;
 import com.msy.phonestore.vo.ResponseModel;
@@ -31,6 +29,7 @@ public class PhoneComboServiceImpl implements IPhoneComboService {
 
     @Autowired
     private PhoneComboMapper phoneComboMapper;
+
     @Override
     public ResponseModel findByMap(Map<String, Object> map) throws Exception {
         List<PhoneCombo> phoneCombos = phoneComboMapper.selectByMap(map);
@@ -38,9 +37,17 @@ public class PhoneComboServiceImpl implements IPhoneComboService {
     }
 
     @Override
-    public ResponseModel findById(Integer[] ids) throws Exception {
+    public ResponseModel findByPhoneComboIds(Integer[] ids) throws Exception {
         return null;
     }
+
+    @Override
+    public ResponseModel findByPhoneComboId(Integer phoneComboId) throws Exception {
+        PhoneCombo phoneCombo = phoneComboMapper.selectById(phoneComboId);
+
+        return ResponseModel.success(ResCode.SUCCESS,phoneCombo);
+    }
+
 
     @Override
     public ResponseModel findComboListPage(Map<String, Object> map) throws Exception {
@@ -55,5 +62,14 @@ public class PhoneComboServiceImpl implements IPhoneComboService {
 
         IPage<PhoneComboAndPhoneAndPhoneTypeDTO> pageDTOs = phoneComboMapper.selectJoinPage(comboPage, PhoneComboAndPhoneAndPhoneTypeDTO.class, mpjLambdaWrapper);
         return ResponseModel.success(ResCode.SUCCESS,pageDTOs);
+    }
+
+    @Override
+    public ResponseModel insertComboMsg(PhoneCombo phoneCombo) throws Exception {
+        int row = phoneComboMapper.insert(phoneCombo);
+        if(row>0){
+            return ResponseModel.success(ResCode.SUCCESS);
+        }
+        return ResponseModel.fail(ResCode.FAIL);
     }
 }

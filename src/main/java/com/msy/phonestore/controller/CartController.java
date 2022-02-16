@@ -35,7 +35,7 @@ public class CartController {
 
     @RequestMapping("/insertCartMsg")
     public ResponseModel insertCartMsg(@RequestBody Cart cart)throws Exception{
-        System.out.println(cart.getComboId()+" "+cart.getPhoneDetailetId());
+        System.out.println(cart.getComboId()+" "+cart.getPhoneDetailId());
         ResponseModel model = cartService.insertCartMsg(cart);
         return model;
     }

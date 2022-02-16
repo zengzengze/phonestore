@@ -47,4 +47,17 @@ public class PhoneController {
         ResponseModel model = phoneService.findPhoneListPageMsg(map);
         return model;
     }
+
+
+    @RequestMapping("/insertPhoneMsg")
+    public ResponseModel insertPhoneMsg(@RequestBody Map<String,Object> map)throws Exception{
+        ResponseModel model = phoneService.insertPhoneMsg(map);
+        return model;
+    }
+
+    @RequestMapping("/findByPhoneIdMsg")
+    public ResponseModel findByPhoneIdMsg(Integer phoneId)throws Exception{
+        ResponseModel model = phoneService.findByPhoneIdMsg(phoneId);
+        return model;
+    }
 }

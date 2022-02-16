@@ -1,14 +1,6 @@
 package com.msy.phonestore.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.msy.phonestore.pojo.PhoneAssure;
-import com.msy.phonestore.pojo.PhoneDetailet;
-import com.msy.phonestore.pojo.PhoneType;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

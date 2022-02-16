@@ -3,6 +3,9 @@ package com.msy.phonestore.mapper;
 import com.github.yulichang.base.MPJBaseMapper;
 import com.msy.phonestore.pojo.Phone;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -12,4 +15,11 @@ import com.msy.phonestore.pojo.Phone;
  */
 public interface PhoneMapper extends MPJBaseMapper<Phone> {
 
+    public List<Phone> queryMsgByMap(Map<String,Object> map) throws Exception;
+
+    public int queryMsgByMapCount(Map<String,Object> map) throws Exception;
+
+    public Phone queryByPhoneId(Integer phoneId) throws Exception;
+
+//    public Phone queryBuyNowByMap(Map<String,Object> map)throws Exception;
 }

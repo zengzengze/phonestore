@@ -2,10 +2,9 @@ package com.msy.phonestore.pojo;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.msy.phonestore.dto.CartAndUserAndPhoneAndPhoneDetailetDTO;
-import com.msy.phonestore.dto.OrderDetailetAndPhoneAndPhoneDetailetAndComboAndAssureDTO;
+import com.msy.phonestore.dto.AddressAndProvinceAndCityAndCountyDTO;
+import com.msy.phonestore.dto.CartAndUserAndPhoneAndPhoneDetailDTO;
 import lombok.Data;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.Date;
 import java.util.List;
@@ -65,7 +64,7 @@ public class Orders {
     private Date completeTime;
 
     @TableField(exist = false)
-    private List<OrderDetailet> orderDetailets;
+    private List<OrderDetail> orderDetailList;
 
     @TableField(exist = false)
     private List<OrderTime> orderTimes;
@@ -76,13 +75,13 @@ public class Orders {
     @TableField(exist = false)
     private Users users;
 
-//    @TableField(exist = false)
-//    private Coupon coupon;
-
-//    @TableField(exist = false)
-//    private List<OrderDetailetAndPhoneAndPhoneDetailetAndComboAndAssureDTO> DTOList;
+    @TableField(exist = false)
+    private Parcel parcel;
 
     @TableField(exist = false)
-    private List<CartAndUserAndPhoneAndPhoneDetailetDTO> cartDTOList;
+    private AddressAndProvinceAndCityAndCountyDTO orderAddressDTO;
+
+    @TableField(exist = false)
+    private List<CartAndUserAndPhoneAndPhoneDetailDTO> cartDTOList;
 
 }

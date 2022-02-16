@@ -10,12 +10,23 @@ import java.util.Random;
  * @Description:
  */
 public class CreateCode {
+
     public static String getCreateCode()throws Exception{
         String str="012345678998765432101234567890";
         Random rn=new Random();
         StringBuffer sb=new StringBuffer();
         for(int i=0;i<6;i++){
             sb.append(str.charAt(rn.nextInt(str.length())));
+        }
+        return sb.toString();
+    }
+
+    public static String getCreateUserName()throws Exception{
+        String str="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+        Random rad=new Random();
+        StringBuffer sb=new StringBuffer();
+        for(int i=0;i<=5;i++){
+            sb.append(str.charAt(rad.nextInt(str.length())));
         }
         return sb.toString();
     }

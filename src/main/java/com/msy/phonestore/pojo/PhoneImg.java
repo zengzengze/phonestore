@@ -1,8 +1,6 @@
 package com.msy.phonestore.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 /**
@@ -14,12 +12,13 @@ import lombok.Data;
  */
 @Data
 @TableName(value = "phone_Img")
+@KeySequence(value = "SEQ_PHONEIMG_PHONEIMGID")
 public class PhoneImg {
 
-    @TableId(value = "phoneImgId")
+    @TableId(value = "phoneImgId",type = IdType.INPUT)
     private Integer phoneImgId;
-    @TableField(value = "phoneDetailetId")
-    private Integer phoneDetailetId;
+    @TableField(value = "phoneDetailId")
+    private Integer phoneDetailId;
     @TableField(value = "imgOne")
     private String imgOne;
     @TableField(value = "imgTwo")
@@ -30,4 +29,8 @@ public class PhoneImg {
     private String imgFour;
     @TableField(value = "imgFive")
     private String imgFive;
+
+    //保存图片列表
+    @TableField(exist = false)
+    private String[] imgList;
 }

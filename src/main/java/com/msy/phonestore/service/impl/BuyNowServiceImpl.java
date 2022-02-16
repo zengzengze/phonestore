@@ -1,9 +1,9 @@
 package com.msy.phonestore.service.impl;
 
-import com.github.yulichang.base.MPJBaseMapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
-import com.msy.phonestore.dto.PhoneAndPhoneDetailetAndComboAndAssureDTO;
-import com.msy.phonestore.mapper.PhoneMapper;
+import com.msy.phonestore.dto.PhoneAndPhoneDetailAndComboAndAssureDTO;
+import com.msy.phonestore.dto.PhoneDetailAndPhoneAndPhoneTypeDTO;
+import com.msy.phonestore.mapper.*;
 import com.msy.phonestore.pojo.*;
 import com.msy.phonestore.service.ifc.IBuyNowService;
 import com.msy.phonestore.vo.ResCode;
@@ -26,23 +26,39 @@ public class BuyNowServiceImpl implements IBuyNowService {
 
     @Autowired
     private PhoneMapper phoneMapper;
+    @Autowired
+    private PhoneAssureMapper phoneAssureMapper;
+    @Autowired
+    private PhoneComboMapper phoneComboMapper;
+    @Autowired
+    private PhoneDetailMapper phoneDetailMapper;
+    @Autowired
+    private CommodityMapper commodityMapper;
 
     @Override
-    public ResponseModel findByMapMsg(Map<String, Object> map) throws Exception {
-
+    public ResponseModel getfindBuyNowPhoneDetail(Map<String, Object> map) throws Exception {
         MPJLambdaWrapper mpjLambdaWrapper=new MPJLambdaWrapper<>()
-                .selectAll(PhoneDetailet.class)
+                .selectAll(PhoneDetail.class)
                 .select(Phone::getPhoneName,Phone::getPhoneImg)
-                .select(PhoneCombo::getCombo,PhoneCombo::getComboId,PhoneCombo::getComboPrice)
-                .select(PhoneAssure::getAssureId,PhoneAssure::getAssure,PhoneAssure::getAssureImg,PhoneAssure::getAssurePrice)
-                .innerJoin(PhoneDetailet.class, PhoneDetailet::getPhoneId, Phone::getPhoneId)
-                .innerJoin(PhoneCombo.class,PhoneCombo::getPhoneId,Phone::getPhoneId)
-                .innerJoin(PhoneAssure.class,PhoneAssure::getPhoneId,Phone::getPhoneId)
-                .eq(map.get("phoneDetailetId")!=null,PhoneDetailet::getPhoneDetailetId,map.get("phoneDetailetId"))
-                .eq(map.get("comboId")!=null,PhoneCombo::getComboId,map.get("comboId"))
-                .eq(map.get("assureId")!=null,PhoneAssure::getAssureId,map.get("assureId"));
+                .select(PhoneType::getPhoneType)
+                .innerJoin(Phone.class, Phone::getPhoneId, PhoneDetail::getPhoneId)
+                .innerJoin(PhoneType.class,PhoneType::getPhoneTypeId,Phone::getPhoneTypeId)
+                .eq(map.get("phoneDetailId")!=null, PhoneDetail::getPhoneDetailId,map.get("phoneDetailId"));
 
-        List<PhoneAndPhoneDetailetAndComboAndAssureDTO> DTOS = phoneMapper.selectJoinList(PhoneAndPhoneDetailetAndComboAndAssureDTO.class, mpjLambdaWrapper);
-        return ResponseModel.success(ResCode.SUCCESS,DTOS);
+        PhoneDetailAndPhoneAndPhoneTypeDTO DTO = phoneDetailMapper.selectJoinOne(PhoneDetailAndPhoneAndPhoneTypeDTO.class, mpjLambdaWrapper);
+
+        if(map.get("assureId")!=""&&map.get("assureId")!=null){
+            PhoneAssure phoneAssure = phoneAssureMapper.selectById(Integer.parseInt(map.get("assureId").toString()) );
+            DTO.setPhoneAssure(phoneAssure);
+        }
+        if(map.get("comboId")!=""&&map.get("comboId")!=null){
+            PhoneCombo phoneCombo = phoneComboMapper.selectById(Integer.parseInt(map.get("comboId").toString()) );
+            if(phoneCombo.getCommodityId()!=null&& phoneCombo.getCommodityId()!=0){
+                Commodity commodity = commodityMapper.selectById(phoneCombo.getCommodityId());
+                phoneCombo.setCommodity(commodity);
+            }
+            DTO.setPhoneCombo(phoneCombo);
+        }
+        return ResponseModel.success(ResCode.SUCCESS,DTO);
     }
 }

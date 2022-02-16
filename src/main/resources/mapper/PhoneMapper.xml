@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.phonestore.mapper.PhoneMapper">
+    <resultMap id="Phone_PhoneDetail_" type="Phone">
+        <id column="phoneId" property="phoneId"></id>
+        <result column="phoneName" property="phoneName"></result>
+        <result column="phoneTypeId" property="phoneTypeId"></result>
+        <result column="phoneImg" property="phoneImg"></result>
+        <association property="phoneType" javaType="phoneType">
+            <id column="phoneTypeId" property="phoneTypeId"></id>
+            <result column="phoneType" property="phoneType"></result>
+        </association>
+        <collection property="phoneDetailList" ofType="phoneDetail">
+            <id column="phoneDetailId" property="phoneDetailId"></id>
+            <result column="phoneId" property="phoneId"></result>
+            <result column="color" property="color"></result>
+            <result column="ram" property="ram"></result>
+            <result column="storage" property="storage"></result>
+            <result column="price" property="price"></result>
+            <result column="quantity" property="quantity"></result>
+            <result column="screenSize" property="screenSize"></result>
+            <result column="version" property="version"></result>
+            <result column="quantity" property="quantity"></result>
+            <association property="phoneImg" javaType="phoneImg">
+                <id column="phoneImgId" property="phoneImgId"></id>
+                <result column="imgOne" property="imgOne"></result>
+                <result column="imgTwo" property="imgTwo"></result>
+                <result column="imgThree" property="imgThree"></result>
+                <result column="imgFour" property="imgFour"></result>
+                <result column="imgFive" property="imgFive"></result>
+            </association>
+        </collection>
+        <collection property="phoneAssureList" ofType="phoneAssure">
+            <id column="assureId" property="assureId"></id>
+            <result column="assure" property="assure"></result>
+            <result column="assurePrice" property="assurePrice"></result>
+            <result column="assureImg" property="assureImg"></result>
+            <result column="phoneId" property="phoneId"></result>
+        </collection>
+        <collection property="phoneComboList" ofType="phoneCombo">
+            <id column="comboId" property="comboId"></id>
+            <result column="combo" property="combo"></result>
+            <result column="comboPrice" property="comboPrice"></result>
+            <result column="phoneId" property="phoneId"></result>
+            <result column="commodityId" property="commodityId"></result>
+            <!--<association property="commodity" javaType="commodity">-->
+                <!--<id column="commodityId" property="commodityId"></id>-->
+                <!--<result column="commodityName" property="commodityName"></result>-->
+                <!--<result column="commodityPrice" property="commodityPrice"></result>-->
+                <!--<result column="commodityImg" property="commodityImg"></result>-->
+                <!--<result column="commodityColor" property="commodityColor"></result>-->
+            <!--</association>-->
+        </collection>
+    </resultMap>
+
+    <!--<resultMap id="PhoneDetail_Phone_" type="PhoneDetail">-->
+            <!--<id column="phoneDetailId" property="phoneDetailId"></id>-->
+            <!--<result column="phoneId" property="phoneId"></result>-->
+            <!--<result column="color" property="color"></result>-->
+            <!--<result column="ram" property="ram"></result>-->
+            <!--<result column="storage" property="storage"></result>-->
+            <!--<result column="price" property="price"></result>-->
+            <!--<result column="quantity" property="quantity"></result>-->
+            <!--<result column="screenSize" property="screenSize"></result>-->
+            <!--<result column="version" property="version"></result>-->
+            <!--<result column="quantity" property="quantity"></result>-->
+        <!--<association property="phone" javaType="phone">-->
+            <!--<id column="phoneId" property="phoneId"></id>-->
+            <!--<result column="phoneName" property="phoneName"></result>-->
+            <!--<result column="phoneTypeId" property="phoneTypeId"></result>-->
+            <!--<result column="phoneImg" property="phoneImg"></result>-->
+            <!--<association property="phoneType" javaType="phoneType">-->
+                <!--<id column="phoneTypeId" property="phoneTypeId"></id>-->
+                <!--<result column="phoneType" property="phoneType"></result>-->
+            <!--</association>-->
+        <!--</association>-->
+            <!--<association property="phoneImg" javaType="phoneImg">-->
+                <!--<id column="phoneImgId" property="phoneImgId"></id>-->
+                <!--<result column="imgOne" property="imgOne"></result>-->
+                <!--<result column="imgTwo" property="imgTwo"></result>-->
+                <!--<result column="imgThree" property="imgThree"></result>-->
+                <!--<result column="imgFour" property="imgFour"></result>-->
+                <!--<result column="imgFive" property="imgFive"></result>-->
+            <!--</association>-->
+        <!--<association property="phoneAssure" javaType="phoneAssure">-->
+            <!--<id column="assureId" property="assureId"></id>-->
+            <!--<result column="assure" property="assure"></result>-->
+            <!--<result column="assurePrice" property="assurePrice"></result>-->
+            <!--<result column="assureImg" property="assureImg"></result>-->
+            <!--<result column="phoneId" property="phoneId"></result>-->
+        <!--</association>-->
+        <!--<association property="phoneCombo" javaType="phoneCombo">-->
+            <!--<id column="comboId" property="comboId"></id>-->
+            <!--<result column="combo" property="combo"></result>-->
+            <!--<result column="comboPrice" property="comboPrice"></result>-->
+            <!--<result column="phoneId" property="phoneId"></result>-->
+        <!--</association>-->
+    <!--</resultMap>-->
+
+    <select id="queryMsgByMap" resultMap="Phone_PhoneDetail_" parameterType="map">
+        select * from (
+        select p.*,
+        pt.phonetype,rownum rn
+        from phone p,phone_type pt
+        where p.phonetypeId=pt.phonetypeId
+        <if test="phoneTypeId!='' and phoneType!=null">
+            and p.phonetypeId=#{phoneTypeId}
+        </if>
+        <if test="phoneName!='' and phoneName!=null">
+            and p.phoneName=#{phoneName}
+        </if>
+        and rownum &lt;=#{pageNumber}*#{pageSize})
+        where rn>(#{pageNumber}-1)*#{pageSize}
+    </select>
+
+
+    <select id="queryMsgByMapCount" resultType="int" parameterType="map">
+        select count(1) from (
+        select p.*,pt.phonetype
+        from phone p,phone_type pt
+        where p.phonetypeId=pt.phonetypeId
+        <if test="phoneTypeId!='' and phoneType!=null">
+            and p.phonetypeId=#{phoneTypeId}
+        </if>
+        <if test="phoneName!='' and phoneName!=null">
+            and p.phoneName=#{phoneName}
+        </if>
+        )
+    </select>
+
+    <select id="queryByPhoneId" resultMap="Phone_PhoneDetail_" parameterType="int">
+        select * from phone p,phone_type pt,phone_Detail pd,phone_assure pa,phone_combo pc
+        where p.phoneTypeId=pt.phoneTypeId
+        and p.phoneId=pd.phoneId
+        and p.phoneId=pa.phoneId
+        and p.phoneId=pc.phoneId
+        and p.phoneId=#{phoneId}
+    </select>
+
+</mapper>

@@ -1,5 +1,7 @@
 package com.msy.phonestore.service.ifc;
 
+import com.msy.phonestore.pojo.Phone;
+import com.msy.phonestore.pojo.PhoneImg;
 import com.msy.phonestore.vo.ResponseModel;
 
 import java.util.Map;
@@ -13,4 +15,6 @@ import java.util.Map;
  */
 public interface IPhoneImgService {
     ResponseModel findPhoneImgMsg(Map<String,Object> map)throws Exception;
+
+    ResponseModel updatePhoneImgByMapMsg(Map<String,Object> map)throws Exception;
 }

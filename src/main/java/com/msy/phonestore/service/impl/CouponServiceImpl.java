@@ -85,8 +85,8 @@ public class CouponServiceImpl implements ICouponService {
     @Override
     public ResponseModel findCouponListPagMsg(Map<String, Object> map) throws Exception {
         QueryWrapper queryWrapper=new QueryWrapper<Coupon>()
-                .like(map.get("coupon")!=null,"coupon",map.get("coupon"))
-                .eq(map.get("couponType")!=null,"couponType",map.get("couponType"));
+                .like(map.get("coupon")!=null && map.get("coupon")!="","coupon",map.get("coupon"))
+                .eq(map.get("couponType")!=null && map.get("couponType")!="","couponType",map.get("couponType"));
 
         Page userPage=new Page<>((Integer)map.get("pageNumber"),(Integer)map.get("pageSize"));
         Page page = couponMapper.selectPage(userPage, queryWrapper);

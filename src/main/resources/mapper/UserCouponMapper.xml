@@ -56,7 +56,7 @@
         ) and uc.userid=#{userId} and uc.userCouponCount!=0 order by c.endTime
     </select>
 
-    <select id="findUserCouponBuId" resultMap="UserCoupon_CouPon_" parameterType="int">
+    <select id="findUserCouponById" resultMap="UserCoupon_CouPon_" parameterType="int">
         select * from user_Coupon uc,coupon c where uc.couponid=c.couponid and uc.usercouponid=#{userCouponId}
     </select>
 

@@ -15,7 +15,11 @@ import java.util.Map;
  */
 public interface IOrderService {
 
-    ResponseModel findOrdersAndOrderDetailet(Map<String,Object> map)throws Exception;
+    ResponseModel findOrderPageList(Map<String,Object> map)throws Exception;
+
+    ResponseModel findOrderOneByMap(Map<String,Object> map)throws Exception;
+
+    ResponseModel findOrderListByMap(Map<String,Object> map)throws Exception;
 
     ResponseModel insertOrder(Map<String,Object> map)throws Exception;
 

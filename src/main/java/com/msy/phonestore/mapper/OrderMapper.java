@@ -17,6 +17,11 @@ import java.util.Map;
  */
 public interface OrderMapper extends MPJBaseMapper<Orders> {
 
+    public List<Orders> queryPageMsgByMap(Map<String,Object> map)throws Exception;
+
     public List<Orders> queryMsgByMap(Map<String,Object> map)throws Exception;
 
+    public Orders queryOneMsgByMap(Map<String,Object> map)throws Exception;
+
+    public int queryCountByMap(Map<String,Object> map)throws Exception;
 }

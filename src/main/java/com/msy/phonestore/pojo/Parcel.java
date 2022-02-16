@@ -2,6 +2,7 @@ package com.msy.phonestore.pojo;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.msy.phonestore.dto.DeliveryToolsInfo;
 import lombok.Data;
 
 import java.util.Date;
@@ -32,4 +33,7 @@ public class Parcel {
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
     @TableField(value = "deliveryTime")
     private Date deliveryTime;
+
+    @TableField(exist = false)
+    private DeliveryToolsInfo deliveryToolsInfo;
 }

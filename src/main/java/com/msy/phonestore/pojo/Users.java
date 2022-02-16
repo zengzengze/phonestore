@@ -3,6 +3,8 @@ package com.msy.phonestore.pojo;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @TableName(value = "users")
 @KeySequence(value = "USERS_USERID_SEQ")
@@ -23,4 +25,7 @@ public class Users {
     private String email;
     @TableField(value = "phoneNumber")
     private String phoneNumber;
+
+    @TableField(exist = false)
+    private List<Message> messageList;
 }

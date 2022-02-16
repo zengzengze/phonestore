@@ -21,7 +21,10 @@ public class PhoneCombo {
     private double comboPrice;
     @TableField(value ="phoneId")
     private Integer phoneId;
-    private Integer quantity;
+    @TableField(value ="commodityId")
+    private Integer commodityId;
 
+    @TableField(exist = false)
+    private Commodity commodity;
 
 }

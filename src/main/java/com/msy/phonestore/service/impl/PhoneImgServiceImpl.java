@@ -1,5 +1,6 @@
 package com.msy.phonestore.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.msy.phonestore.mapper.PhoneImgMapper;
 import com.msy.phonestore.pojo.PhoneImg;
@@ -8,9 +9,6 @@ import com.msy.phonestore.vo.ResCode;
 import com.msy.phonestore.vo.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +19,7 @@ import java.util.Map;
  * @Description:
  */
 @Service
-public class PhoneImgServiceImpl implements IPhoneImgService {
+public  class PhoneImgServiceImpl implements IPhoneImgService {
 
     @Autowired
     private PhoneImgMapper phoneImgMapper;
@@ -29,13 +27,37 @@ public class PhoneImgServiceImpl implements IPhoneImgService {
     @Override
     public ResponseModel findPhoneImgMsg(Map<String, Object> map) throws Exception {
         PhoneImg phoneImg = phoneImgMapper.selectOne(new QueryWrapper<PhoneImg>()
-                .eq(map.get("phoneDetailetId") != null, "phoneDetailetId", map.get("phoneDetailetId")));
-        List list=new ArrayList();
-        list.add(0,phoneImg.getImgOne());
-        list.add(1,phoneImg.getImgTwo());
-        list.add(2,phoneImg.getImgThree());
-        list.add(3,phoneImg.getImgFour());
-        list.add(4,phoneImg.getImgFive());
-        return ResponseModel.success(ResCode.SUCCESS,list);
+                .eq(map.get("phoneDetailId") != null, "phoneDetailId", map.get("phoneDetailId")));
+//        List list=new ArrayList();
+
+        String[] imgList=new String[5];
+        imgList[0]=phoneImg.getImgOne();
+        imgList[1]=phoneImg.getImgTwo();
+        imgList[2]=phoneImg.getImgThree();
+        imgList[3]=phoneImg.getImgFour();
+        imgList[4]=phoneImg.getImgFive();
+
+        phoneImg.setImgList(imgList);
+        return ResponseModel.success(ResCode.SUCCESS,phoneImg);
+    }
+
+    @Override
+    public ResponseModel updatePhoneImgByMapMsg(Map<String,Object> map) throws Exception {
+
+        PhoneImg phoneImg=JSON.parseObject(JSON.toJSONString(map.get("phoneImg")),PhoneImg.class);
+
+        String[] imgList= phoneImg.getImgList();
+
+        phoneImg.setImgOne(imgList[0]);
+        phoneImg.setImgTwo(imgList[1]);
+        phoneImg.setImgThree(imgList[2]);
+        phoneImg.setImgFour(imgList[3]);
+        phoneImg.setImgFive(imgList[4]);
+
+        int row = phoneImgMapper.updateById(phoneImg);
+        if(row>0){
+            return ResponseModel.success(ResCode.SUCCESS);
+        }
+        return ResponseModel.fail(ResCode.FAIL);
     }
 }

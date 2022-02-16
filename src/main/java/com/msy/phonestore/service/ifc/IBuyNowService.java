@@ -13,5 +13,5 @@ import java.util.Map;
  * @Description:
  */
 public interface IBuyNowService {
-    ResponseModel findByMapMsg(Map<String,Object> map)throws Exception;
+    ResponseModel getfindBuyNowPhoneDetail(Map<String,Object> map)throws Exception;
 }

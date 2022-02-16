@@ -17,10 +17,10 @@ spring:
   mail:
     #QQ邮箱这不用改
     host: smtp.qq.com
-    #你的邮箱
-    username: 2098382492@qq.com
-    #你的授权码
-    password: uheqqheoenitdjdj
+#    #你的邮箱
+#    username: 2098382492@qq.com
+#    #你的授权码
+#    password: uheqqheoenitdjdj
     default-encoding: UTF-8
   redis:
     #redis服务器地址
@@ -41,6 +41,7 @@ spring:
         min-idle: 0
         #连接超时时间（毫秒）
     timeout: 30000
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
